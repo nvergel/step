@@ -1,0 +1,1 @@
+next() { DIC=$(echo $1 | sed 's/\//\\\//g'); sed -ie "s/teachme.*md/teachme $DIC/" .bashrc; sb; }
