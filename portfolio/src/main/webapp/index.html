@@ -10,9 +10,70 @@
     <div id="content">
       <h1>My Portfolio</h1>
       <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
+      <p>Hello world</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
+      <div id="personal-info">
+          <p> My name is Nico </p>
+           <button onclick="addRandomFact()">Click for random fact</button>
+           <div id="fact"></div>
+          <img src='images/bonzai.jpg' width="1000"/>
+      </div>
+      <div id="Background">
+      <h1> Background: </h1>
+        <p> I am a student at Harvey Mudd College. Currently I am interning at Google as a software engineer. I have lived in Colorado since I was 5 and I am now 20 years old.</p>
+      </div>
+      <div>
+      <h1> Personal Projects: </h1>
+        <button type="button" class="collapsible">Acceleration Scheme for Semi-Autonomous Vehicles</button>
+        <div class="content">
+        <p> Developed an algorithm to calculate the safest and most efficient acceleration scheme for a platoon. 
+            <a href="paper.html">Paper</a> currently under review. </p>
+        </div>
+        <button type="button" class="collapsible">House Valuation</button>
+        <div class="content">
+        <p> Using machine learning we can estimate a price for your house (as long as you live in Fort Collins)</p>
+        <a href="http://focofoodie.com/"> FOCO House Pricing </a>
+        </div>
+        <button type="button" class="collapsible"> App for buying and selling used textbooks </button>
+        <div class="content">
+        <p> In class I made an <a href="https://github.com/jgrant12345/Social-App-Textbooks">app</a> to trade textbooks since new ones are overly priced! </p>
+        </div>
+        <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+        }
+        </script>
+
+        <p> Want to see more stuff? Find me at <a href="https://github.com/jgrant12345/Social-App-Textbooks">Github</a> or <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193">LinkedIn</a>.</p>
+      </div>
+      <div id="fun-fact">
+        <h1> Fun Facts! </h1>
+        <p> I like motorcycling </p>
+        <div id="m1">
+        <p> Here is a picture of my first motorcycle: &nbsp; <button onclick="dispM2()" id="btn"> > </button> </p> 
+        
+        <img src='images/m1.jpg' width="700"/>
+        </div>
+        <div id="m2">
+        <p> Now a picture of my current motorcycle: <button onclick="dispM1()" id="btn"> < </button> </p>
+        <img src='images/m2.jpg' width="700"/>
+        </div>
+      </div>
+
+
+
     </div>
   </body>
 </html>

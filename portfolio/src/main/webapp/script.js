@@ -26,3 +26,35 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function addRandomFact() {
+  var num = 100;
+  const facts =
+      ['I am 20 years old', 'I live in Colorado', 'I am a human', 'I am not a robot'];
+
+  // Pick a random greeting.
+  const fact = facts[Math.floor(Math.random() * facts.length)];
+
+  // Add it to the page.
+  const factsContainer = document.getElementById('fact');
+  factsContainer.innerText = fact;
+
+  if (factsContainer.style.marginLeft == "")
+    setInterval( function() {
+            factsContainer.style.marginLeft = (Math.abs(100 - num)%100).toString() + "px";
+            num = num % 199 + 1;
+            console.log((Math.abs(100 - num)%100).toString() + "px");
+        }, 20);
+}
+
+function dispM1() {
+
+    document.getElementById('m1').style.display = "block"; 
+    document.getElementById('m2').style.display = "none"; 
+}
+
+function dispM2() {
+
+    document.getElementById('m1').style.display = "none"; 
+    document.getElementById('m2').style.display = "block"; 
+}
