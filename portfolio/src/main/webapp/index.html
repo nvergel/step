@@ -14,7 +14,6 @@
           <p> Call me Nico </p>
            <button onclick="addRandomFact()">Click for random fact</button>
            <div id="fact"></div>
-          <img src='images/bonzai.jpg' width="700"/>
       </div>
       <div id="Background">
       <h1> Background: </h1>
@@ -30,33 +29,24 @@
         <button type="button" class="collapsible">House Valuation</button>
         <div class="content">
         <p> Using machine learning we can estimate a price for your house (as long as you live in Fort Collins) <br>
-        <a href="http://focofoodie.com/"> FOCO House Pricing </a> <p>
-        </div>
+        <a href="http://focofoodie.com/"> FOCO House Pricing </a> </p>        </div>
         <button type="button" class="collapsible"> App for buying and selling used textbooks </button>
         <div class="content">
         <p> In college I made an <a href="https://github.com/jgrant12345/Social-App-Textbooks">app</a> to trade textbooks since new ones are overly priced! </p>
         </div>
         <script>
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-            content.style.display = "none";
-            } else {
-            content.style.display = "block";
-            }
-        });
-        }
+        collabsible()
         </script>
 
         <p id="more"> Want to see more stuff? Find me at <a href="https://github.com/jgrant12345/Social-App-Textbooks">Github</a> or <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193">LinkedIn</a>.</p>
       </div>
       <div id="fun-fact">
-        <h1> Fun Facts! </h1>
+        <h1> Fun Facts about me! </h1>
+        <p> I like plants (orchids are my favorites)</p>
+
+          <img src='images/orchid.jpg' width="700"/>
+          <img src='images/bonzai.jpg' width="700"/>
+
         <p> I like motorcycling </p>
         <div id="m1">
         <p> Here is a picture of my first motorcycle: &nbsp; <button onclick="dispM2()" id="btn"> > </button> </p> 
