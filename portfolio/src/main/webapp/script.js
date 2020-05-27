@@ -32,13 +32,14 @@ function addRandomFact() {
   const facts =
       ['I am 20 years old', 'I live in Colorado', 'I am a human', 'I am not a robot'];
 
-  // Pick a random greeting.
+  // Pick a random fact.
   const fact = facts[Math.floor(Math.random() * facts.length)];
 
   // Add it to the page.
   const factsContainer = document.getElementById('fact');
   factsContainer.innerText = fact;
 
+  // Add function to move text back and forth
   if (factsContainer.style.marginLeft == "")
     setInterval( function() {
             factsContainer.style.marginLeft = (Math.abs(100 - num)%100).toString() + "px";
