@@ -27,7 +27,7 @@ function addRandomFact() {
   const factsContainer = document.getElementById('fact');
   factsContainer.innerText = fact;
 
-  // Add function to move text back and forth
+  // Adds function to move text back and forth
   if (factsContainer.style.marginLeft == "")
     setInterval( function() {
             factsContainer.style.marginLeft = (Math.abs(100 - num)%100).toString() + "px";
