@@ -2,22 +2,24 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Nicolas Perez Vergel</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
   <body>
     <div id="content">
-      <h1>Nicolas Perez Vergel</h1>
-      <div id="greeting-container"></div>
+      <div id="name">
+        <img src="images/face.jpg" id="face"/>
+        <h1>Nicolas Perez Vergel</h1>
+        <p> (call me Nico) </p>
+      </div>
       <div id="personal-info">
-          <p> Call me Nico </p>
            <button onclick="addRandomFact()">Click for random fact</button>
            <div id="fact"></div>
       </div>
       <div id="Background">
       <h1> Background: </h1>
-        <p> I am a student at Harvey Mudd College. Currently I am interning at Google as a software engineer. I have lived in Colorado since I was 5 and I am now 20 years old.</p>
+        <p> I am a rising junior at Harvey Mudd College. This summer I am interning at Google for the STEP program. I know Python, Java, C++ and Javascript. </p>
       </div>
       <div>
       <h1> Personal Projects: </h1>
@@ -26,13 +28,14 @@
         <p> Developed an algorithm to calculate the safest and most efficient acceleration scheme for a platoon. 
             <a href="paper.html">Paper</a> currently under review. </p>
         </div>
-        <button type="button" class="collapsible">House Valuation</button>
-        <div class="content">
-        <p> Using machine learning we can estimate a price for your house (as long as you live in Fort Collins) <br>
-        <a href="http://focofoodie.com/"> FOCO House Pricing </a> </p>        </div>
         <button type="button" class="collapsible"> App for buying and selling used textbooks </button>
         <div class="content">
         <p> In college I made an <a href="https://github.com/jgrant12345/Social-App-Textbooks">app</a> to trade textbooks since new ones are overly priced! </p>
+        </div>
+        <button type="button" class="collapsible">House Valuation</button>
+        <div class="content">
+        <p> Using machine learning we can estimate a price for your house (as long as you live in Fort Collins) <br>
+        <a href="http://focofoodie.com/"> FOCO House Pricing </a> </p>
         </div>
         <script>
         collabsible()
