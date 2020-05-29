@@ -24,9 +24,19 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  private String[] messages = {"hi", "hello", "I am you"};
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
+    boolean me = true;
+    for (String message : messages) {
+        if (me = !me) {
+            response.getWriter().println("<h1> Me: </h1>");
+        } else {
+            response.getWriter().println("<h1> You: </h1>");
+        }
+        response.getWriter().println("<p>" + message + "</p>");
+    }
   }
 }
