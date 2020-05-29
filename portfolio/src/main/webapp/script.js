@@ -72,3 +72,9 @@ function dispM2() {
     document.getElementById('m1').style.display = "none"; 
     document.getElementById('m2').style.display = "block"; 
 }
+
+function getRandomQuoteUsingArrowFunctions() {
+  fetch('/data').then(response => response.text()).then((quote) => {
+    document.getElementById('quote-container').innerHTML = quote;
+  });
+}
