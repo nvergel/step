@@ -29,14 +29,15 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    boolean me = true;
+    boolean myMessage = true;
     for (String message : messages) {
-        if (me = !me) {
-            response.getWriter().println("<h1> Me: </h1>");
+        if (myMessage) {
+            response.getWriter().println("<h1 class='me'> Me: </h1>");
         } else {
-            response.getWriter().println("<h1> You: </h1>");
+            response.getWriter().println("<h1 class='other'> You: </h1>");
         }
         response.getWriter().println("<p>" + message + "</p>");
+        myMessage = !myMessage;
     }
   }
 }
