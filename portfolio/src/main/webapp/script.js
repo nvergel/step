@@ -16,9 +16,8 @@
  * Displays random fact about me
  */
 function addRandomFact() {
-  var num = 100;
   const facts =
-      ['I am 20 years old', 'I live in Colorado', 'I am a human', 'I am not a robot'];
+    ['I am 20 years old', 'I live in Colorado', 'I am a human', 'I am not a robot'];
 
   // Pick a random fact.
   const fact = facts[Math.floor(Math.random() * facts.length)];
@@ -26,14 +25,19 @@ function addRandomFact() {
   // Add it to the page.
   const factsContainer = document.getElementById('fact');
   factsContainer.innerText = fact;
-
-  // Adds function to move text back and forth
+  
+  /* Move text back and forth:
+   * Add function that simulates f(x) = |x| on the interval -range < x < range
+   * We use position to denote f(x) which also determines the width of the left margin.
+   */
+  var x = 0;
+  const range = 100;
   if (factsContainer.style.marginLeft == "")
     setInterval( function() {
-            factsContainer.style.marginLeft = (Math.abs(100 - num)%100).toString() + "px";
-            num = num % 199 + 1;
-            console.log((Math.abs(100 - num)%100).toString() + "px");
-        }, 20);
+      const position = Math.abs(x);
+      factsContainer.style.marginLeft = position.toString() + "px";
+      x = (x == range) ? -range : x + 1;
+    }, 20);
 }
 
 function hideUnhide(content)  {
