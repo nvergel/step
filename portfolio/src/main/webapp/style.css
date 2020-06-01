@@ -1,18 +1,58 @@
+
+/* ---------- General Formatting ---------- */
+
 body {
   background-color: aliceblue;
 }
 
-#content {
+h1 {
+  margin-top: 30px;
+  margin-left: -20px; /* for pseudo indent */
+}
+
+button {
+  border-radius: 4px;
+  background-image: -webkit-gradient(
+        linear,
+        right bottom,
+        left top,
+        color-stop(0, #c1d5f7),
+        color-stop(1, #d2e0f9)
+    );
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+button:hover {
+     background-image: -webkit-gradient(
+        linear,
+        right bottom,
+        left top,
+        color-stop(0, #d2e0f9),
+        color-stop(1, #d2e0f9)
+    );
+}
+
+/* Use to hide and unhide divs */
+.hidden {
+display: none;
+}
+
+#wrapper {
   margin-left: auto;
   margin-right: auto;
   width: 700px;
   border-left: 20px;
 }
 
-.hidden {
-display: none;
-}
+/* ---------- Header with name and selfie ---------- */
 
+/* Make selfie name and comment
+   appear in same line */
 #name {
   overflow:auto;
   margin-bottom: 15px;
@@ -28,47 +68,14 @@ display: none;
 #name h1 {
   margin-left: 0px;
   margin-top:77px;
-  margin-right: 5px
+  margin-bottom: 10px;
 }
 
 #name p {
   float:left;
-  margin-top:0px;
+  margin-top: 0px;
+  margin-left: 10px;
 }
-
-
-button {
-  border-radius: 4px;
-  background-image: -webkit-gradient(
-        linear,
-        right bottom,
-        left top,
-        color-stop(0, #ddd),
-        color-stop(1, #eee)
-    );
-  outline: none;
-  cursor: pointer;
-  border: none;
-  padding: 2px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-button:hover {
-     background-image: -webkit-gradient(
-        linear,
-        right bottom,
-        left top,
-        color-stop(0, #eee),
-        color-stop(1, #eee)
-    );
-}
-
-h1 {
-  margin-top: 30px;
-  margin-left: -20px;
-}
-
 
 #fact {
  margin-top: 15px;
@@ -78,9 +85,8 @@ h1 {
   width: 200px;
 }
 
-#personal-info img {
-  margin-top: 20px;
-}
+
+/* ---------- Personal Project section ---------- */
 
 .collapsible {
   margin-top: 5px;
@@ -91,11 +97,10 @@ h1 {
         linear,
         left bottom,
         left top,
-        color-stop(0, #ddd),
-        color-stop(1, #eee)
+        color-stop(0, #c1d5f7),
+        color-stop(1, #d2e0f9)
     );
 }
-
 
 .content {
   padding-left: 30px;
@@ -110,6 +115,9 @@ h1 {
 #more {
     margin-top: 30px;
 }
+
+
+/* ---------- Fun fact section ---------- */
 
 #btn {
   position: relative;
