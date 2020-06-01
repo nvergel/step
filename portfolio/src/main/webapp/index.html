@@ -29,26 +29,26 @@
 
       <div>
       <h1> Personal Projects: </h1>
-        <button type="button" class="collapsible">Acceleration Scheme for Semi-Autonomous Vehicles</button>
-        <div class="content">
+        <button class="collapsible">Acceleration Scheme for Semi-Autonomous Vehicles</button>
+        <div class="content hidden">
           <p> Developed an algorithm to calculate the safest and most efficient acceleration scheme for a platoon. 
             <a href="paper.html">Paper</a> currently under review.
           </p>
         </div>
-        <button type="button" class="collapsible"> App for buying and selling used textbooks </button>
-        <div class="content">
+        <button class="collapsible"> App for buying and selling used textbooks </button>
+        <div class="content hidden">
           <p> In college I made an <a href="https://github.com/jgrant12345/Social-App-Textbooks">app</a>
               to trade textbooks since new ones are overly priced!
           </p>
         </div>
-        <button type="button" class="collapsible">House Valuation</button>
-        <div class="content">
+        <button class="collapsible">House Valuation</button>
+        <div class="content hidden">
           <p> Using machine learning we can estimate a price for your house (as long as you live in Fort Collins) <br>
             <a href="http://focofoodie.com/"> FOCO House Pricing </a>
           </p>
         </div>
         <script>
-          collabsible() //This funcion adds a listener to .collapsble which hides/unhides .content
+          collapsible() //This funcion adds a listener to .collapsble which hides/unhides .content
         </script>
 
         <p id="more"> Want to see more stuff? Find me at 
@@ -64,15 +64,15 @@
         <img src='images/bonzai.jpg' width="700"/>
         <p> I also like motorcycling </p>
         <div id="m1">
-          <p> Here is a picture of my first motorcycle: <button onclick="dispM2()" id="btn"> > </button> </p> 
+          <p> Here is a picture of my first motorcycle: <button onclick="swapMotorcyclePicture()" id="btn"> > </button> </p> 
           <img src='images/m1.jpg' width="700"/>
         </div>
-        <div id="m2">
-          <p> Now a picture of my current motorcycle: <button onclick="dispM1()" id="btn"> < </button> </p>
+        <div class="hidden" id="m2">
+          <p> Now a picture of my current motorcycle: <button onclick="swapMotorcyclePicture()" id="btn"> < </button> </p>
           <img src='images/m2.jpg' width="700"/>
         </div>
         <p>See messages:</p>
-        <button onclick="getRandomQuoteUsingArrowFunctions()">Wubba lubba dub dub!</button>
+        <button onclick="getRandomQuote()">Wubba lubba dub dub!</button>
         <div id="quote-container"></div>
       </div>
 

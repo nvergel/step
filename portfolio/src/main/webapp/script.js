@@ -29,6 +29,7 @@ function addRandomFact() {
   /* Move text back and forth:
    * Add function that simulates f(x) = |x| on the interval -range < x < range
    * We use position to denote f(x) which also determines the width of the left margin.
+   * The width of the left margin oscillates between 0 and range.
    */
   var x = 0;
   const range = 100;
@@ -40,44 +41,44 @@ function addRandomFact() {
     }, 20);
 }
 
+/*
+ * Add or remove .hidden to div
+ */
 function hideUnhide(content)  {
-    if (content.style.display === "block") {
-            content.style.display = "none";
-            } else {
-            content.style.display = "block";
-            }
+  if (content.classList.contains("hidden")) {
+    content.classList.remove("hidden");
+  } else {
+    content.classList.add("hidden");
+  }
 }
 
-function collabsible() {
-    var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-            content.style.display = "none";
-            } else {
-            content.style.display = "block";
-            }
-        });
-        }
+/*
+ * Defines behavior of .collapsible and .content
+ */
+function collapsible() {
+  // Get list of buttons in personal project
+  var collapsibles = document.getElementsByClassName("collapsible");
+  for (const i in collapsibles) {
+    collapsibles[i].addEventListener("click", function() {
+      // When button is clicked, hide or undhide its respective content
+      var content = this.nextElementSibling;
+      hideUnhide(content);
+    })};
 }
 
-function dispM1() {
-
-    document.getElementById('m1').style.display = "block"; 
-    document.getElementById('m2').style.display = "none"; 
+/*
+ * Swaps back and forth between .m1 and .m2
+ * when button is clicked
+ */
+function swapMotorcyclePicture() {
+    hideUnhide(document.getElementById('m1')); 
+    hideUnhide(document.getElementById('m2')); 
 }
 
-function dispM2() {
-
-    document.getElementById('m1').style.display = "none"; 
-    document.getElementById('m2').style.display = "block"; 
-}
-
-function getRandomQuoteUsingArrowFunctions() {
+/*
+ * send GET request to server let
+ */
+function getRandomQuote() {
   fetch('/data').then(response => response.text()).then((quote) => {
     document.getElementById('quote-container').innerHTML = quote;
   });
