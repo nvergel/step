@@ -37,7 +37,7 @@ button:hover {
     );
 }
 
-/* Use to hide and unhide divs */
+/* Use to hide and unhide elements */
 .hidden {
 display: none;
 }

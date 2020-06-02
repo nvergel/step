@@ -12,6 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*
+ * Runs two functions on load
+ */
+function executeFunctions() {
+    moveText();
+    collapsible();
+}
+
+
 /**
  * Displays random fact about me
  */
@@ -25,24 +34,26 @@ function addRandomFact() {
   // Add it to the page.
   const factsContainer = document.getElementById('fact');
   factsContainer.innerText = fact;
-  
-  /* Move text back and forth:
-   * Add function that simulates f(x) = |x| on the interval -range < x < range
-   * We use position to denote f(x) which also determines the width of the left margin.
-   * The width of the left margin oscillates between 0 and range.
-   */
+}
+
+/* Move text back and forth:
+* Add function that simulates f(x) = |x| on the interval -range < x < range
+* We use position to denote f(x) which also determines the width of the left margin.
+* The width of the left margin oscillates between 0 and range.
+*/
+function moveText() {
   var x = 0;
   const range = 100;
-  if (factsContainer.style.marginLeft == "")
-    setInterval( function() {
-      const position = Math.abs(x);
-      factsContainer.style.marginLeft = position.toString() + "px";
-      x = (x == range) ? -range : x + 1;
-    }, 20);
+  const factsContainer = document.getElementById('fact');
+  setInterval( function() {
+    const position = Math.abs(x);
+    factsContainer.style.marginLeft = position.toString() + "px";
+    x = (x == range) ? -range : x + 1;
+  }, 20);
 }
 
 /*
- * Add or remove .hidden to div
+ * Add or remove .hidden to element
  */
 function hideUnhide(content)  {
   if (content.classList.contains("hidden")) {
@@ -53,7 +64,7 @@ function hideUnhide(content)  {
 }
 
 /*
- * Defines behavior of .collapsible and .content
+ * This funcion adds a listener to .collapsble which hides/unhides .content
  */
 function collapsible() {
   // Get list of buttons in personal project
@@ -79,7 +90,25 @@ function swapMotorcyclePicture() {
  * send GET request to server let
  */
 function getRandomQuote() {
-  fetch('/data').then(response => response.text()).then((quote) => {
-    document.getElementById('quote-container').innerHTML = quote;
+  fetch('/data').then(response => response.json()).then( messages => {
+    const displayMessages = document.getElementById('messages-container');
+    messages.forEach(message => displayMessages.appendChild(
+      createMessage(message.name, message.text)));
   });
+}
+
+/** Creates element for individual message. */
+function createMessage(name, text) {
+  const container = document.createElement('div');
+  const person = document.createElement('h2');
+  const message = document.createElement('p');
+
+  person.innerText = name;
+  message.innerText = text;
+
+  container.classList.add("message");
+  container.appendChild(person);
+  container.appendChild(message);
+
+  return container;
 }

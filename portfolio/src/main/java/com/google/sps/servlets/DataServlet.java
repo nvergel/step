@@ -20,24 +20,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
+import com.google.gson.Gson;
+
+
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private String[] messages = {"hi", "hello", "I am you"};
+
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    boolean myMessage = true;
-    for (String message : messages) {
-        if (myMessage) {
-            response.getWriter().println("<h1 class='me'> Me: </h1>");
-        } else {
-            response.getWriter().println("<h1 class='other'> You: </h1>");
-        }
-        response.getWriter().println("<p>" + message + "</p>");
-        myMessage = !myMessage;
-    }
+    // Creates messages
+    ArrayList<Person> messages = new ArrayList<Person>();
+    messages.add(new Person("me", "hi"));
+    messages.add(new Person("you", "hello"));
+
+    //Convert messages to JSON
+    Gson gson = new Gson();
+    String json = gson.toJson(messages);
+
+    // Send the JSON as the response
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
+}
+
+class Person {
+    String name;
+    String text;
+
+    public Person(String name, String text) {
+        this.name = name;
+        this.text = text;
+    }
 }
