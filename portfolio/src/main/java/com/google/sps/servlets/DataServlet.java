@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,17 +32,26 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  ArrayList<Person> messages = new ArrayList<Person>();
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //Convert messages to JSON
-    Gson gson = new Gson();
-    String json = gson.toJson(messages);
 
-    // Send the JSON as the response
+    Query query = new Query("Messages").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    ArrayList<Person> messages = new ArrayList<Person>();
+    for (Entity entity : results.asIterable()) {
+      String name = (String) entity.getProperty("name");
+      String text = (String) entity.getProperty("text");
+
+      Person message = new Person(name, text);
+      messages.add(message);
+    }
+
+    Gson gson = new Gson();
+
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(gson.toJson(messages));
   }
 
   @Override
@@ -47,9 +62,16 @@ public class DataServlet extends HttpServlet {
     String text = request.getParameter("text-input");
 
     if (text != "") {
-        messages.add(new Person(name, text));
+      long timestamp = System.currentTimeMillis();
+
+      Entity messageEntity = new Entity("Messages");
+      messageEntity.setProperty("name", name);
+      messageEntity.setProperty("text", text);
+      messageEntity.setProperty("timestamp", timestamp);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(messageEntity);
     }
-    
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");

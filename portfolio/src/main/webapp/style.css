@@ -132,11 +132,18 @@ display: none;
 /* ---------- Messages section ---------- */
 
 .message {
-  background-color: white;
+  background-color: #f0f0f0;
   display:inline-block;
   border-style: groove;
-  padding: 3px;
+  padding: 3px 7px 3px 3px;
   margin-top: 0;
+}
+
+#messages-container {
+    background-color: #fafafa;
+    padding-left: 10px;
+    padding-top: 1px;
+    margin-top: 10px;
 }
 
 #name-input {
