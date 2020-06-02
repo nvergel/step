@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
- * Runs two functions on load
- */
+//Runs two functions on load
 function executeFunctions() {
     moveText();
+    getMessage();
     collapsible();
 }
 
@@ -89,24 +88,25 @@ function swapMotorcyclePicture() {
 /*
  * send GET request to server let
  */
-function getRandomQuote() {
+function getMessage() {
   fetch('/data').then(response => response.json()).then( messages => {
     const displayMessages = document.getElementById('messages-container');
     messages.forEach(message => displayMessages.appendChild(
       createMessage(message.name, message.text)));
+      /*console.log(message));*/
   });
 }
 
 /** Creates element for individual message. */
 function createMessage(name, text) {
   const container = document.createElement('div');
-  const person = document.createElement('h2');
+  const person = document.createElement('p');
   const message = document.createElement('p');
+  message.classList.add("message");
 
   person.innerText = name;
   message.innerText = text;
 
-  container.classList.add("message");
   container.appendChild(person);
   container.appendChild(message);
 

@@ -37,6 +37,10 @@ button:hover {
     );
 }
 
+textarea {
+  padding: 5px 0px 3px 5px;
+}
+
 /* Use to hide and unhide elements */
 .hidden {
 display: none;
@@ -122,4 +126,27 @@ display: none;
 #btn {
   position: relative;
   left: 410px;
+}
+
+
+/* ---------- Messages section ---------- */
+
+.message {
+  background-color: white;
+  display:inline-block;
+  border-style: groove;
+  padding: 3px;
+  margin-top: 0;
+}
+
+#name-input {
+  height: 15px;
+  width: 250px;
+  position: relative;
+  top: 6px;
+}
+
+#text-input {
+  width: 700px;
+  height: 50px;
 }
