@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import com.google.gson.Gson;
+import org.javatuples.Pair;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -39,12 +40,12 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<Person> messages = new ArrayList<Person>();
+    ArrayList<Pair<String, String>> messages = new ArrayList<Pair<String, String>>();
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("text");
 
-      Person message = new Person(name, text);
+      Pair<String, String> message = new Pair<String, String>(name, text);
       messages.add(message);
     }
 
@@ -76,14 +77,4 @@ public class DataServlet extends HttpServlet {
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
   }
-}
-
-class Person {
-    String name;
-    String text;
-
-    public Person(String name, String text) {
-        this.name = name;
-        this.text = text;
-    }
 }

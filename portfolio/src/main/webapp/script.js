@@ -92,7 +92,7 @@ function getMessage() {
   fetch('/data').then(response => response.json()).then( messages => {
     const displayMessages = document.getElementById('messages-container');
     messages.forEach(message => displayMessages.appendChild(
-      createMessage(message.name, message.text)));
+      createMessage(message.val0, message.val1)));
       /*console.log(message));*/
   });
 }
