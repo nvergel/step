@@ -114,7 +114,7 @@ function createMessage(name, text) {
   const container = document.createElement('div');
   const person = document.createElement('p');
   const message = document.createElement('p');
-  name.classList.add("name");
+  person.classList.add("name");
   message.classList.add("message");
 
   person.innerText = name;
