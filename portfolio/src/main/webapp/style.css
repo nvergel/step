@@ -139,11 +139,17 @@ display: none;
   margin-top: 0;
 }
 
+.name{
+    margin-bottom: 0;
+}
+
 #messages-container {
     background-color: #fafafa;
     padding-left: 20px;
     padding-top: 1px;
     margin-top: 10px;
+    height: 500px;
+    overflow: scroll;
 }
 
 #name-input {

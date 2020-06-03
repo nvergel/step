@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.io.BufferedReader;
 import com.google.gson.Gson;
 import org.javatuples.Pair;
 
@@ -57,12 +58,14 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    BufferedReader body = request.getReader();
+    String content = body.readLine();
+    int endOfNameIndex = content.indexOf("*");
+    if (endOfNameIndex != 0 && endOfNameIndex != (content.length() -1 )) {
+      // Get name and text
+      String name = content.substring(0, endOfNameIndex++);
+      String text = content.substring(endOfNameIndex);
 
-    // Get name and text
-    String name = request.getParameter("name-input");
-    String text = request.getParameter("text-input");
-
-    if (text != "") {
       long timestamp = System.currentTimeMillis();
 
       Entity messageEntity = new Entity("Messages");
@@ -72,9 +75,12 @@ public class DataServlet extends HttpServlet {
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(messageEntity);
-    }
+    
 
-    // Redirect back to the HTML page.
-    response.sendRedirect("/index.html");
+      response.setContentType("text/html;");
+      response.getWriter().println(content);
+      response.getWriter().println(name);
+      response.getWriter().println(text);
+    }
   }
 }

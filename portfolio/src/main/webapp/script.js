@@ -15,7 +15,7 @@
 //Runs two functions on load
 function executeFunctions() {
     moveText();
-    getMessage();
+    getMessages();
     collapsible();
 }
 
@@ -85,15 +85,27 @@ function swapMotorcyclePicture() {
     hideUnhide(document.getElementById('m2')); 
 }
 
-/*
- * send GET request to server let
- */
-function getMessage() {
+// Delete Messages
+function deleteMessages() {
+  const request = new Request('/delete-data', {method: 'POST'});
+  fetch(request).then(() => getMessages());
+}
+
+// Upload message to website
+function postMessage() {
+  const name = document.getElementById('name-input').value;
+  const text = document.getElementById('text-input').value;
+  const request = new Request('/data', {method: 'POST', body: name + '*' + text});
+  fetch(request).then(() => getMessages());
+}
+
+// send GET request to server let
+function getMessages() {
   fetch('/data').then(response => response.json()).then( messages => {
     const displayMessages = document.getElementById('messages-container');
+    displayMessages.innerHTML = "";
     messages.forEach(message => displayMessages.appendChild(
       createMessage(message.val0, message.val1)));
-      /*console.log(message));*/
   });
 }
 
@@ -102,6 +114,7 @@ function createMessage(name, text) {
   const container = document.createElement('div');
   const person = document.createElement('p');
   const message = document.createElement('p');
+  name.classList.add("name");
   message.classList.add("message");
 
   person.innerText = name;
