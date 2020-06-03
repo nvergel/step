@@ -86,12 +86,6 @@ function swapMotorcyclePicture() {
 }
 
 // Delete Messages
-function deleteMessages() {
-  const request = new Request('/delete-data', {method: 'POST'});
-  fetch(request).then(() => getMessages());
-}
-
-// Delete Messages
 function deleteMessage(id) {
   const params = new URLSearchParams();
   params.append('id', id);
