@@ -26,9 +26,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.io.BufferedReader;
 import com.google.gson.Gson;
-import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -41,12 +40,13 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<Pair<String, String>> messages = new ArrayList<Pair<String, String>>();
+    ArrayList<Triplet<String, String, Long>> messages = new ArrayList<Triplet<String, String, Long>>();
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("text");
+      long id = entity.getKey().getId();
 
-      Pair<String, String> message = new Pair<String, String>(name, text);
+      Triplet<String, String, Long> message = new Triplet<String, String, Long>(name, text, id);
       messages.add(message);
     }
 
@@ -58,29 +58,18 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    BufferedReader body = request.getReader();
-    String content = body.readLine();
-    int endOfNameIndex = content.indexOf("*");
-    if (endOfNameIndex != 0 && endOfNameIndex != (content.length() -1 )) {
-      // Get name and text
-      String name = content.substring(0, endOfNameIndex++);
-      String text = content.substring(endOfNameIndex);
+    // Get name and text
+    String name = request.getParameter("name-input");
+    String text = request.getParameter("text-input");
 
-      long timestamp = System.currentTimeMillis();
+    long timestamp = System.currentTimeMillis();
 
-      Entity messageEntity = new Entity("Messages");
-      messageEntity.setProperty("name", name);
-      messageEntity.setProperty("text", text);
-      messageEntity.setProperty("timestamp", timestamp);
+    Entity messageEntity = new Entity("Messages");
+    messageEntity.setProperty("name", name);
+    messageEntity.setProperty("text", text);
+    messageEntity.setProperty("timestamp", timestamp);
 
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(messageEntity);
-    
-
-      response.setContentType("text/html;");
-      response.getWriter().println(content);
-      response.getWriter().println(name);
-      response.getWriter().println(text);
-    }
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(messageEntity);
   }
 }
