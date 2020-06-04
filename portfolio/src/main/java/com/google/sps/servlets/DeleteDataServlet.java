@@ -39,7 +39,7 @@ public class DeleteDataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     long id = Long.parseLong(request.getParameter("id"));
 
-    Key messageEntityKey = KeyFactory.createKey("Messages", id);
+    Key messageEntityKey = KeyFactory.createKey(Constants.MESSAGE_ENTITY_TYPE, id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.delete(messageEntityKey);
   }

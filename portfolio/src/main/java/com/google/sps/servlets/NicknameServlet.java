@@ -61,16 +61,18 @@ public class NicknameServlet extends HttpServlet {
     }
 
     String nickname = request.getParameter("nickname");
-    String id = userService.getCurrentUser().getUserId();
+    if (nickname != null && nickname != "") {
+      String id = userService.getCurrentUser().getUserId();
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity entity = new Entity("UserInfo", id);
-    entity.setProperty("id", id);
-    entity.setProperty("nickname", nickname);
-    // The put() function automatically inserts new data or updates existing data based on ID
-    datastore.put(entity);
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      Entity entity = new Entity("UserInfo", id);
+      entity.setProperty("id", id);
+      entity.setProperty("nickname", nickname);
+      // The put() function automatically inserts new data or updates existing data based on ID
+      datastore.put(entity);
 
-    response.sendRedirect("/");
+      response.sendRedirect("/");
+    }
   }
 
   /**

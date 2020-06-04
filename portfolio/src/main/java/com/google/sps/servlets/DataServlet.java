@@ -46,23 +46,24 @@ public class DataServlet extends HttpServlet {
       userEmail = userService.getCurrentUser().getEmail();
     }
 
-    Query query = new Query("Messages").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query(Constants.MESSAGE_ENTITY_TYPE).addSort("timestamp", SortDirection.DESCENDING);
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<Triplet<String, String, Long>> messages = new ArrayList<Triplet<String, String, Long>>();
+    ArrayList<MessageContainer> messages = new ArrayList<MessageContainer>();
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("text");
       String email = (String) entity.getProperty("email");
       long id;
-      if (email.equals(userEmail)) {
+      if (email != null && email.equals(userEmail)) {
         id = entity.getKey().getId();
       } else {
         id = 0;
       }
 
-      Triplet<String, String, Long> message = new Triplet<String, String, Long>(name, text, id);
+      MessageContainer message = new MessageContainer(name, text, id);
 
       messages.add(message);
     }
@@ -78,23 +79,24 @@ public class DataServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
-      String userEmail = userService.getCurrentUser().getEmail();
-    
-      // Get name and text
-      String name = getUserNickname(userService.getCurrentUser().getUserId());
-      String text = request.getParameter("text-input");
+        String userEmail = userService.getCurrentUser().getEmail();
+        
+        // Get name and text
+        String name = getUserNickname(userService.getCurrentUser().getUserId());
+        String text = request.getParameter("text-input");
+        if (text != null && name != null) {
+        long timestamp = System.currentTimeMillis();
 
-      long timestamp = System.currentTimeMillis();
+        Entity messageEntity = new Entity(Constants.MESSAGE_ENTITY_TYPE);
+        messageEntity.setProperty("name", name);
+        messageEntity.setProperty("text", text);
+        messageEntity.setProperty("email", userEmail);
+        messageEntity.setProperty("timestamp", timestamp);
 
-      Entity messageEntity = new Entity("Messages");
-      messageEntity.setProperty("name", name);
-      messageEntity.setProperty("text", text);
-      messageEntity.setProperty("email", userEmail);
-      messageEntity.setProperty("timestamp", timestamp);
-
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(messageEntity);
-   }
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(messageEntity);
+      }
+    }
   }
 
   /**
@@ -112,5 +114,18 @@ public class DataServlet extends HttpServlet {
     }
     String nickname = (String) entity.getProperty("nickname");
     return nickname;
+  }
+
+}
+
+class MessageContainer {
+  final String userName;
+  final String userMessage;
+  final long messageId;
+
+  MessageContainer(final String userName, final String userMessage, final long messageId) {
+    this.userName = userName;
+    this.userMessage = userMessage;
+    this.messageId = messageId;
   }
 }

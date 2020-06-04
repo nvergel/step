@@ -26,7 +26,6 @@ function signIn() {
       document.getElementById("log-in").innerHTML = htmlText;
       const htmlTextLen = htmlText.length;
       const loggedIn = htmlText.substring(htmlTextLen-11,htmlTextLen-5);
-      console.log(loggedIn)
       if (loggedIn != "Logout") {
         document.getElementById("input-container").classList.add("hidden");
       }
@@ -125,7 +124,7 @@ function getMessages() {
     const displayMessages = document.getElementById('messages-container');
     displayMessages.innerHTML = "";
     messages.forEach(message => displayMessages.appendChild(
-      createMessage(message.val0, message.val1, message.val2)));
+      createMessage(message.userName, message.userMessage, message.messageId)));
     document.getElementById('messages-container').style.height = height.toString() + "px";
   });
 }
@@ -150,7 +149,6 @@ function createMessage(name, text, id) {
 }
 
 function addRemoveButton(container, id) {
-  console.log(id)
   if (id != 0) {
     const remove = document.createElement('button');
     remove.innerText = "X";
