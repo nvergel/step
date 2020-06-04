@@ -73,10 +73,12 @@
       </div>
 
       <h1>Messages:</h1>
-      <textarea name="name-input" id="name-input" placeholder="Name"></textarea>
-      <br></br>
-      <textarea name="text-input" id="text-input" placeholder="Something nice?"></textarea>
-      <button onclick="postMessage()"> Post message </button>
+      <div id="input-container">
+        <textarea name="name-input" id="name-input" placeholder="Name"></textarea>
+        <br></br>
+        <textarea name="text-input" id="text-input" placeholder="Something nice?"></textarea>
+        <button onclick="postMessage()"> Post message </button>
+      </div>
       <div id="messages-container"></div>
     </div>
   </body>

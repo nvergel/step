@@ -59,7 +59,7 @@ textarea {
 #log-in {
   position:absolute;
   top:0;
-  right:20px;
+  right:50px;
 }
 
 #log-in a {
@@ -71,7 +71,7 @@ textarea {
 
 #log-in a:hover {
   color: rgba(255, 255, 255, 1);
-  box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
+  box-shadow: 0 5px 15px rgba(26, 115, 232, .4);
 }
 
 /* ---------- Header with name and selfie ---------- */

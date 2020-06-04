@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -36,6 +38,14 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    UserService userService = UserServiceFactory.getUserService();
+
+    String userEmail = "";
+
+    if (userService.isUserLoggedIn()) {
+      userEmail = userService.getCurrentUser().getEmail();
+    }
+
     Query query = new Query("Messages").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -44,9 +54,16 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("text");
-      long id = entity.getKey().getId();
+      String email = (String) entity.getProperty("email");
+      long id;
+      if (email.equals(userEmail)) {
+        id = entity.getKey().getId();
+      } else {
+        id = 0;
+      }
 
       Triplet<String, String, Long> message = new Triplet<String, String, Long>(name, text, id);
+
       messages.add(message);
     }
 
@@ -58,18 +75,25 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get name and text
-    String name = request.getParameter("name-input");
-    String text = request.getParameter("text-input");
 
-    long timestamp = System.currentTimeMillis();
+    UserService userService = UserServiceFactory.getUserService();
+    if (userService.isUserLoggedIn()) {
+      String userEmail = userService.getCurrentUser().getEmail();
+    
+      // Get name and text
+      String name = request.getParameter("name-input");
+      String text = request.getParameter("text-input");
 
-    Entity messageEntity = new Entity("Messages");
-    messageEntity.setProperty("name", name);
-    messageEntity.setProperty("text", text);
-    messageEntity.setProperty("timestamp", timestamp);
+      long timestamp = System.currentTimeMillis();
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(messageEntity);
+      Entity messageEntity = new Entity("Messages");
+      messageEntity.setProperty("name", name);
+      messageEntity.setProperty("text", text);
+      messageEntity.setProperty("email", userEmail);
+      messageEntity.setProperty("timestamp", timestamp);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(messageEntity);
+   }
   }
 }

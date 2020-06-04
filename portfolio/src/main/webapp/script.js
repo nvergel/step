@@ -22,7 +22,14 @@ function executeFunctions() {
 
 // Run serverlet to get url for log in
 function signIn() {
-    fetch('/log-in', {method: 'POST'}).then(html => html.text()).then(htmlText => document.getElementById("log-in").innerHTML = htmlText);
+    fetch('/log-in', {method: 'POST'}).then(html => html.text()).then(htmlText => {
+      document.getElementById("log-in").innerHTML = htmlText;
+      const htmlTextLen = htmlText.length;
+      const loggedIn = htmlText.substring(htmlTextLen-10,htmlTextLen-5);
+      if (loggedIn == "Login") {
+        document.getElementById("input-container").classList.add("hidden");
+      }
+    });
 }
 
 /**
@@ -124,24 +131,32 @@ function getMessages() {
   });
 }
 
-/** Creates element for individual message. */
+// Creates element for individual message.
 function createMessage(name, text, id) {
   const container = document.createElement('div');
   const person = document.createElement('p');
   const message = document.createElement('p');
-  const remove = document.createElement('button');
   person.classList.add("name");
   message.classList.add("message");
-  remove.classList.add("remove");
 
   person.innerText = name;
   message.innerText = text;
-  remove.innerText = "X";
-  remove.onclick = () => deleteMessage(id);
 
-  container.appendChild(remove);
+  addRemoveButton(container, id)
+
   container.appendChild(person);
   container.appendChild(message);
 
   return container;
+}
+
+function addRemoveButton(container, id) {
+  console.log(id)
+  if (id != 0) {
+    const remove = document.createElement('button');
+    remove.innerText = "X";
+    remove.onclick = () => deleteMessage(id);
+    remove.classList.add("remove");
+    container.appendChild(remove);
+  }
 }
