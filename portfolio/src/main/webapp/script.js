@@ -86,40 +86,55 @@ function swapMotorcyclePicture() {
 }
 
 // Delete Messages
-function deleteMessages() {
-  const request = new Request('/delete-data', {method: 'POST'});
-  fetch(request).then(() => getMessages());
+function deleteMessage(id) {
+  const params = new URLSearchParams();
+  params.append('id', id);
+  fetch('/delete-data', {method: 'POST', body: params}).then(() => getMessages());
 }
 
 // Upload message to website
 function postMessage() {
+  const textInput = document.getElementById('text-input');
   const name = document.getElementById('name-input').value;
-  const text = document.getElementById('text-input').value;
-  const request = new Request('/data', {method: 'POST', body: name + '*' + text});
-  fetch(request).then(() => getMessages());
+  const text = textInput.value;
+  if (text != "" & name != ""){
+    const params = new URLSearchParams();
+    params.append('name-input', name);
+    params.append('text-input', text);
+    const request = new Request('/data', {method: 'POST', body: params});
+    fetch(request).then(() => getMessages());
+  }
+  textInput.value = "";
 }
 
 // send GET request to server let
 function getMessages() {
   fetch('/data').then(response => response.json()).then( messages => {
+    const height = Math.min(messages.length, 5) * 100
     const displayMessages = document.getElementById('messages-container');
     displayMessages.innerHTML = "";
     messages.forEach(message => displayMessages.appendChild(
-      createMessage(message.val0, message.val1)));
+      createMessage(message.userName, message.userMessage, message.messageId)));
+    document.getElementById('messages-container').style.height = height.toString() + "px";
   });
 }
 
 /** Creates element for individual message. */
-function createMessage(name, text) {
+function createMessage(name, text, id) {
   const container = document.createElement('div');
   const person = document.createElement('p');
   const message = document.createElement('p');
+  const remove = document.createElement('button');
   person.classList.add("name");
   message.classList.add("message");
+  remove.classList.add("remove");
 
   person.innerText = name;
   message.innerText = text;
+  remove.innerText = "X";
+  remove.onclick = () => deleteMessage(id);
 
+  container.appendChild(remove);
   container.appendChild(person);
   container.appendChild(message);
 
