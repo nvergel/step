@@ -61,15 +61,16 @@ public class DataServlet extends HttpServlet {
     // Get name and text
     String name = request.getParameter("name-input");
     String text = request.getParameter("text-input");
+    if (text != null && name != null) {
+      long timestamp = System.currentTimeMillis();
 
-    long timestamp = System.currentTimeMillis();
+      Entity messageEntity = new Entity("Messages");
+      messageEntity.setProperty("name", name);
+      messageEntity.setProperty("text", text);
+      messageEntity.setProperty("timestamp", timestamp);
 
-    Entity messageEntity = new Entity("Messages");
-    messageEntity.setProperty("name", name);
-    messageEntity.setProperty("text", text);
-    messageEntity.setProperty("timestamp", timestamp);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(messageEntity);
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(messageEntity);
+    }
   }
 }
