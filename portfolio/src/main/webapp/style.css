@@ -13,12 +13,12 @@ h1 {
 button {
   border-radius: 4px;
   background-image: -webkit-gradient(
-        linear,
-        right bottom,
-        left top,
-        color-stop(0, #c1d5f7),
-        color-stop(1, #d2e0f9)
-    );
+    linear,
+    right bottom,
+    left top,
+    color-stop(0, #c1d5f7),
+    color-stop(1, #d2e0f9)
+  );
   outline: none;
   cursor: pointer;
   border: none;
@@ -28,13 +28,13 @@ button {
 }
 
 button:hover {
-     background-image: -webkit-gradient(
-        linear,
-        right bottom,
-        left top,
-        color-stop(0, #d2e0f9),
-        color-stop(1, #d2e0f9)
-    );
+  background-image: -webkit-gradient(
+    linear,
+    right bottom,
+    left top,
+    color-stop(0, #d2e0f9),
+    color-stop(1, #d2e0f9)
+  );
 }
 
 textarea {
@@ -43,7 +43,7 @@ textarea {
 
 /* Use to hide and unhide elements */
 .hidden {
-display: none;
+  display: none;
 }
 
 #wrapper {
@@ -51,6 +51,27 @@ display: none;
   margin-right: auto;
   width: 700px;
   border-left: 20px;
+}
+
+
+/* ---------- Log In section ---------- */
+
+#log-in {
+  position:absolute;
+  top:0;
+  right:20px;
+}
+
+#log-in a {
+  border-radius: 4px;
+  padding: 10px 30px;
+  background-color: rgb(26, 115, 232);;
+  color: rgba(255, 255, 255, .9);
+}
+
+#log-in a:hover {
+  color: rgba(255, 255, 255, 1);
+  box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
 }
 
 /* ---------- Header with name and selfie ---------- */

@@ -16,9 +16,14 @@
 function executeFunctions() {
     moveText();
     getMessages();
+    signIn();
     collapsible();
 }
 
+// Run serverlet to get url for log in
+function signIn() {
+    fetch('/log-in', {method: 'POST'}).then(html => html.text()).then(htmlText => document.getElementById("log-in").innerHTML = htmlText);
+}
 
 /**
  * Displays random fact about me
