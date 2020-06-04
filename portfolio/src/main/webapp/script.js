@@ -114,7 +114,7 @@ function getMessages() {
     const displayMessages = document.getElementById('messages-container');
     displayMessages.innerHTML = "";
     messages.forEach(message => displayMessages.appendChild(
-      createMessage(message.val0, message.val1, message.val2)));
+      createMessage(message.userName, message.userMessage, message.messageId)));
     document.getElementById('messages-container').style.height = height.toString() + "px";
   });
 }

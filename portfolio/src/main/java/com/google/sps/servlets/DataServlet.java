@@ -36,17 +36,17 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    Query query = new Query("Messages").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query(Constants.MESSAGE_ENTITY_TYPE).addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<Triplet<String, String, Long>> messages = new ArrayList<Triplet<String, String, Long>>();
+    ArrayList<MessageContainer> messages = new ArrayList<MessageContainer>();
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("text");
       long id = entity.getKey().getId();
 
-      Triplet<String, String, Long> message = new Triplet<String, String, Long>(name, text, id);
+      MessageContainer message = new MessageContainer(name, text, id);
       messages.add(message);
     }
 
@@ -64,7 +64,7 @@ public class DataServlet extends HttpServlet {
     if (text != null && name != null) {
       long timestamp = System.currentTimeMillis();
 
-      Entity messageEntity = new Entity("Messages");
+      Entity messageEntity = new Entity(Constants.MESSAGE_ENTITY_TYPE);
       messageEntity.setProperty("name", name);
       messageEntity.setProperty("text", text);
       messageEntity.setProperty("timestamp", timestamp);
@@ -72,5 +72,17 @@ public class DataServlet extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(messageEntity);
     }
+  }
+}
+
+class MessageContainer {
+  final String userName;
+  final String userMessage;
+  final long messageId;
+
+  MessageContainer(final String userName, final String userMessage, final long messageId) {
+    this.userName = userName;
+    this.userMessage = userMessage;
+    this.messageId = messageId;
   }
 }
