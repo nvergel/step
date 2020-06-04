@@ -25,8 +25,9 @@ function signIn() {
     fetch('/log-in', {method: 'POST'}).then(html => html.text()).then(htmlText => {
       document.getElementById("log-in").innerHTML = htmlText;
       const htmlTextLen = htmlText.length;
-      const loggedIn = htmlText.substring(htmlTextLen-10,htmlTextLen-5);
-      if (loggedIn == "Login") {
+      const loggedIn = htmlText.substring(htmlTextLen-11,htmlTextLen-5);
+      console.log(loggedIn)
+      if (loggedIn != "Logout") {
         document.getElementById("input-container").classList.add("hidden");
       }
     });
@@ -107,11 +108,9 @@ function deleteMessage(id) {
 // Upload message to website
 function postMessage() {
   const textInput = document.getElementById('text-input');
-  const name = document.getElementById('name-input').value;
   const text = textInput.value;
-  if (text != "" & name != ""){
-    const params = new URLSearchParams();
-    params.append('name-input', name);
+  if (text != ""){
+    const params = new URLSearchParams()
     params.append('text-input', text);
     const request = new Request('/data', {method: 'POST', body: params});
     fetch(request).then(() => getMessages());

@@ -81,7 +81,7 @@ public class DataServlet extends HttpServlet {
       String userEmail = userService.getCurrentUser().getEmail();
     
       // Get name and text
-      String name = request.getParameter("name-input");
+      String name = getUserNickname(userService.getCurrentUser().getUserId());
       String text = request.getParameter("text-input");
 
       long timestamp = System.currentTimeMillis();
@@ -95,5 +95,22 @@ public class DataServlet extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(messageEntity);
    }
+  }
+
+  /**
+   * Returns the nickname of the user with id, or empty String if the user has not set a nickname.
+   */
+  private String getUserNickname(String id) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query =
+        new Query("UserInfo")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+    if (entity == null) {
+      return "";
+    }
+    String nickname = (String) entity.getProperty("nickname");
+    return nickname;
   }
 }
