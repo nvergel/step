@@ -14,22 +14,22 @@
 
 //Runs two functions on load
 function executeFunctions() {
-    moveText();
-    getMessages();
-    signIn();
-    collapsible();
+  moveText();
+  getMessages();
+  signIn();
+  collapsible();
 }
 
 // Run serverlet to get url for log in
 function signIn() {
-    fetch('/log-in', {method: 'POST'}).then(html => html.text()).then(htmlText => {
-      document.getElementById("log-in").innerHTML = htmlText;
-      const htmlTextLen = htmlText.length;
-      const loggedIn = htmlText.substring(htmlTextLen-11,htmlTextLen-5);
-      if (loggedIn != "Logout") {
-        document.getElementById("input-container").classList.add("hidden");
-      }
-    });
+  fetch('/log-in', {method: 'POST'}).then(html => html.text()).then(htmlText => {
+    document.getElementById("log-in").innerHTML = htmlText;
+    const htmlTextLen = htmlText.length;
+    const loggedIn = htmlText.substring(htmlTextLen-11,htmlTextLen-5);
+    if (loggedIn != "Logout") {
+      document.getElementById("input-container").classList.add("hidden");
+    }
+  });
 }
 
 /**
@@ -85,7 +85,8 @@ function collapsible() {
       // When button is clicked, hide or undhide its respective content
       var content = this.nextElementSibling;
       hideUnhide(content);
-    })};
+    })
+  };
 }
 
 /*
@@ -93,8 +94,8 @@ function collapsible() {
  * when button is clicked
  */
 function swapMotorcyclePicture() {
-    hideUnhide(document.getElementById('m1')); 
-    hideUnhide(document.getElementById('m2')); 
+  hideUnhide(document.getElementById('m1')); 
+  hideUnhide(document.getElementById('m2')); 
 }
 
 // Delete Messages
