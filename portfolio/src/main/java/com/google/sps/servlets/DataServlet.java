@@ -13,12 +13,12 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+ 
+import static com.googlecode.objectify.ObjectifyService.ofy;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -27,7 +27,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 import com.google.gson.Gson;
 import org.javatuples.Triplet;
 
@@ -38,40 +41,29 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    // Get userId to check for user's message
     UserService userService = UserServiceFactory.getUserService();
-
-    String userEmail = "";
-
+    Optional<String> currentUser = Optional.empty();
     if (userService.isUserLoggedIn()) {
-      userEmail = userService.getCurrentUser().getEmail();
+      currentUser = Optional.of(userService.getCurrentUser().getUserId());
     }
 
-    Query query = new Query(Constants.MESSAGE_ENTITY_TYPE).addSort("timestamp", SortDirection.DESCENDING);
+    // Load in saved messages
+    List<Message> messages = ofy().load().type(Message.class).list();
+    Collections.sort(messages);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+    // Initiate list of displayable messages
+    ArrayList<DisplayableMessage> messagesToDisplay = new ArrayList<DisplayableMessage>();
 
-    ArrayList<MessageContainer> messages = new ArrayList<MessageContainer>();
-    for (Entity entity : results.asIterable()) {
-      String name = (String) entity.getProperty("name");
-      String text = (String) entity.getProperty("text");
-      String email = (String) entity.getProperty("email");
-      long id;
-      if (email != null && email.equals(userEmail)) {
-        id = entity.getKey().getId();
-      } else {
-        id = 0;
-      }
-
-      MessageContainer message = new MessageContainer(name, text, id);
-
-      messages.add(message);
+    for (Message message : messages) {
+      boolean messageCreatedByUser = currentUser.filter(currentUserId -> currentUserId.equals(message.userId)).isPresent();
+      DisplayableMessage dispMessage = new DisplayableMessage(message, messageCreatedByUser);
+      messagesToDisplay.add(dispMessage);
     }
 
     Gson gson = new Gson();
-
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(messages));
+    response.getWriter().println(gson.toJson(messagesToDisplay));
   }
 
   @Override
@@ -79,23 +71,28 @@ public class DataServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
-        String userEmail = userService.getCurrentUser().getEmail();
-        
-        // Get name and text
-        String name = getUserNickname(userService.getCurrentUser().getUserId());
-        String text = request.getParameter("text-input");
-        if (text != null && name != null) {
-        long timestamp = System.currentTimeMillis();
+      String userId = userService.getCurrentUser().getUserId();
+      String userText = request.getParameter("text-input");
+      long timeCreated = System.currentTimeMillis();
+      Message userMessage = new Message(userId, userText, timeCreated);
+      ofy().save().entity(userMessage).now();
+    } else {
+      // TODO: send error?
+    }
+  }
 
-        Entity messageEntity = new Entity(Constants.MESSAGE_ENTITY_TYPE);
-        messageEntity.setProperty("name", name);
-        messageEntity.setProperty("text", text);
-        messageEntity.setProperty("email", userEmail);
-        messageEntity.setProperty("timestamp", timestamp);
+  // Extracts data from Message object to display
+  class DisplayableMessage {
+    String userName;
+    String userText;
+    Long messageId;
+    boolean messageCreatedByUser;
 
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        datastore.put(messageEntity);
-      }
+    public DisplayableMessage(Message message, boolean messageCreatedByUser) {
+      userName = getUserNickname(message.userId);
+      userText = message.userText;
+      messageId = message.messageId;
+      this.messageCreatedByUser = messageCreatedByUser;
     }
   }
 
@@ -108,7 +105,7 @@ public class DataServlet extends HttpServlet {
         new Query("UserInfo")
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
+    com.google.appengine.api.datastore.Entity entity = results.asSingleEntity();
     if (entity == null) {
       return "";
     }
@@ -116,16 +113,4 @@ public class DataServlet extends HttpServlet {
     return nickname;
   }
 
-}
-
-class MessageContainer {
-  final String userName;
-  final String userMessage;
-  final long messageId;
-
-  MessageContainer(final String userName, final String userMessage, final long messageId) {
-    this.userName = userName;
-    this.userMessage = userMessage;
-    this.messageId = messageId;
-  }
 }

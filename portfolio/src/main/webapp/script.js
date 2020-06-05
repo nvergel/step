@@ -123,37 +123,41 @@ function getMessages() {
     const height = Math.min(messages.length, 5) * 100
     const displayMessages = document.getElementById('messages-container');
     displayMessages.innerHTML = "";
-    messages.forEach(message => displayMessages.appendChild(
-      createMessage(message.userName, message.userMessage, message.messageId)));
+    messages.forEach(message => displayMessages.appendChild(createMessage(message)));
     document.getElementById('messages-container').style.height = height.toString() + "px";
   });
 }
 
 // Creates element for individual message.
-function createMessage(name, text, id) {
+function createMessage(message) {
+
   const container = document.createElement('div');
-  const person = document.createElement('p');
-  const message = document.createElement('p');
-  person.classList.add("name");
-  message.classList.add("message");
+  /* If current user created this message 
+     add button to delete message */
+  if (message.messageCreatedByUser) {
+    addRemoveButton(container, message.messageId)
+  }
 
-  person.innerText = name;
-  message.innerText = text;
-
-  addRemoveButton(container, id)
-
-  container.appendChild(person);
-  container.appendChild(message);
+  // display message with name
+  addText(container, "name", message.userName)
+  addText(container, "message", message.userText)
 
   return container;
 }
 
+// Helper functions:
+
 function addRemoveButton(container, id) {
-  if (id != 0) {
-    const remove = document.createElement('button');
-    remove.innerText = "X";
-    remove.onclick = () => deleteMessage(id);
-    remove.classList.add("remove");
-    container.appendChild(remove);
-  }
+  const remove = document.createElement('button');
+  remove.innerText = "X";
+  remove.onclick = () => deleteMessage(id);
+  remove.classList.add("remove");
+  container.appendChild(remove);
+}
+
+function addText(container, type, text) {
+  const pElement = document.createElement('p');
+  pElement.classList.add(type);
+  pElement.innerText = text;
+  container.appendChild(pElement);
 }
