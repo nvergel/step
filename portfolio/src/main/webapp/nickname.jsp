@@ -23,7 +23,7 @@
         <button>Submit</button>
       </form>
     <% } else {%>
-      <h2> Login in to chose a Nickname </h2>
+      <h2> Login in to choose a Nickname </h2>
     <% } %>
 
 </body>

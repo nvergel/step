@@ -38,21 +38,23 @@ public class HomeServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
 
+    // Initialize loginContainer to send login info
     LoginContainer loginContainer;
 
     if (userService.isUserLoggedIn()) {
-      // If user has not set a nickname, redirect to nickname page
+    
+      // Retrieve nickname, may or may have not been set
       Optional<String> nickname = Optional.ofNullable(getUserNickname(userService.getCurrentUser().getUserId()));
 
-
+      // If nickname is set, greet user with nickname and give option to logout
       if (nickname.isPresent()) {
         String userEmail = userService.getCurrentUser().getEmail();
         String logoutUrl = userService.createLogoutURL("/");
         loginContainer = new LoginContainer("Hello " + nickname.get() + "!", logoutUrl, "Logout");
-      } else {
+      } else { // If nickname not set, let user choose one
         loginContainer = new LoginContainer("Choose a nickname.", "/nickname.jsp", "Nickname");
       }
-    } else {
+    } else { // Give option to login
       String loginUrl = userService.createLoginURL("/");
       loginContainer = new LoginContainer("Hello stranger", loginUrl, "Login");
     }
@@ -62,7 +64,7 @@ public class HomeServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(loginContainer));
   }
 
-  // Returns the nickname of the user with id, or null if the user has not set a nickname.
+  // Returns the nickname of the user or null if the user has not set a nickname.
   private String getUserNickname(String id) {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query =
