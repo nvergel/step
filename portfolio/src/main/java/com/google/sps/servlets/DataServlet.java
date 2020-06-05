@@ -70,12 +70,16 @@ public class DataServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
       String userId = userService.getCurrentUser().getUserId();
-      String userText = request.getParameter("text-input");
-      long timeCreated = System.currentTimeMillis();
-      Message userMessage = new Message(userId, userText, timeCreated);
-      ofy().save().entity(userMessage).now();
+      Optional<String> userText = Optional.ofNullable(request.getParameter("text-input"));
+      if (userText.filter(text -> !text.equals("")).isPresent()) {
+        long timeCreated = System.currentTimeMillis();
+        Message userMessage = new Message(userId, userText.get(), timeCreated);
+        ofy().save().entity(userMessage).now();
+      } else {
+        System.out.print("No message found");
+      }
     } else {
-      // TODO: send error?
+      System.out.print("User not logged in");
     }
   }
 
