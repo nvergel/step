@@ -22,11 +22,19 @@ function executeFunctions() {
 
 // Run serverlet to get url for log in
 function signIn() {
-  fetch('/log-in', {method: 'POST'}).then(html => html.text()).then(htmlText => {
-    document.getElementById("log-in").innerHTML = htmlText;
-    const htmlTextLen = htmlText.length;
-    const loggedIn = htmlText.substring(htmlTextLen-11,htmlTextLen-5);
-    if (loggedIn != "Logout") {
+  fetch('/log-in', {method: 'POST'}).then(loginContainer => loginContainer.json()).then(loginContainer => {
+    // Get [p, a] elements from log in div
+    logInElements = document.getElementById("log-in").children;
+
+    // Set inner text for paragraph
+    logInElements[0].innerText = loginContainer.greetingForVisitorOrUser;
+
+    // Set link and text for anchor
+    logInAnchor = logInElements[1];
+    logInAnchor.href = loginContainer.urlToLogoutOrLogin;
+    logInAnchor.innerText = loginContainer.typeOfMessage;
+
+    if (loginContainer.typeOfMessage == "Login" || loginContainer.typeOfMessage == "Nickname") {
       document.getElementById("input-container").classList.add("hidden");
     }
   });

@@ -22,33 +22,44 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+import java.util.Optional;
 
 @WebServlet("/log-in")
 public class HomeServlet extends HttpServlet {
 
   @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    doPost(request, response);
+  }
+
+  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
 
     UserService userService = UserServiceFactory.getUserService();
+
+    LoginContainer loginContainer;
+
     if (userService.isUserLoggedIn()) {
       // If user has not set a nickname, redirect to nickname page
-      String nickname = getUserNickname(userService.getCurrentUser().getUserId());
-      if (nickname == null) {
-        response.getWriter().println("<p>Choose a nickname.</p>");
-        response.getWriter().println("<a href=\"/nickname\">Nickname</a>");
-        return;
+      Optional<String> nickname = Optional.ofNullable(getUserNickname(userService.getCurrentUser().getUserId()));
+
+
+      if (nickname.isPresent()) {
+        String userEmail = userService.getCurrentUser().getEmail();
+        String logoutUrl = userService.createLogoutURL("/");
+        loginContainer = new LoginContainer("Hello " + nickname.get() + "!", logoutUrl, "Logout");
+      } else {
+        loginContainer = new LoginContainer("Choose a nickname.", "/nickname.jsp", "Nickname");
       }
-      
-      String userEmail = userService.getCurrentUser().getEmail();
-      String logoutUrl = userService.createLogoutURL("/");
-      response.getWriter().println("<p>Hello " + nickname + "!</p>");
-      response.getWriter().println("<a href=\"" + logoutUrl + "\">Logout</a>");
     } else {
       String loginUrl = userService.createLoginURL("/");
-      response.getWriter().println("<p>Hello stranger</p>");
-      response.getWriter().println("<a href=\"" + loginUrl + "\">Login</a>");
+      loginContainer = new LoginContainer("Hello stranger", loginUrl, "Login");
     }
+
+    Gson gson = new Gson();
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(loginContainer));
   }
 
   // Returns the nickname of the user with id, or null if the user has not set a nickname.
@@ -64,5 +75,17 @@ public class HomeServlet extends HttpServlet {
     }
     String nickname = (String) entity.getProperty("nickname");
     return nickname;
+  }
+
+  class LoginContainer {
+    String greetingForVisitorOrUser;
+    String urlToLogoutOrLogin;
+    String typeOfMessage;
+
+    public LoginContainer(String greetingForVisitorOrUser, String urlToLogoutOrLogin, String typeOfMessage) {
+        this.greetingForVisitorOrUser = greetingForVisitorOrUser;
+        this.urlToLogoutOrLogin = urlToLogoutOrLogin;
+        this.typeOfMessage = typeOfMessage;
+    }
   }
 }

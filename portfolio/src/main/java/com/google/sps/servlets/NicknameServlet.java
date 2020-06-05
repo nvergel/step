@@ -32,27 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 public class NicknameServlet extends HttpServlet {
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
-    PrintWriter out = response.getWriter();
-    out.println("<h1>Set Nickname</h1>");
-
-    UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
-      String nickname = getUserNickname(userService.getCurrentUser().getUserId());
-      out.println("<p>Set your nickname here:</p>");
-      out.println("<form method=\"POST\" action=\"/nickname\">");
-      out.println("<input name=\"nickname\" value=\"" + nickname + "\" />");
-      out.println("<br/>");
-      out.println("<button>Submit</button>");
-      out.println("</form>");
-    } else {
-      String loginUrl = userService.createLoginURL("/nickname");
-      out.println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
-    }
-  }
-
-  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {

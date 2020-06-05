@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 import com.google.gson.Gson;
-import org.javatuples.Triplet;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
