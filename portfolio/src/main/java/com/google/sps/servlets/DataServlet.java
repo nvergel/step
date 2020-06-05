@@ -67,18 +67,25 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    // Only let logged in users to post
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
+
+      // Store id to retrieve nickname when displaying messages
       String userId = userService.getCurrentUser().getUserId();
+
+      // Check for text
       Optional<String> userText = Optional.ofNullable(request.getParameter("text-input"));
       if (userText.filter(text -> !text.equals("")).isPresent()) {
+        // Keep timestamp to display newest message first
         long timeCreated = System.currentTimeMillis();
         Message userMessage = new Message(userId, userText.get(), timeCreated);
         ofy().save().entity(userMessage).now();
-      } else {
+
+      } else {// Maybe throw error
         System.out.print("No message found");
       }
-    } else {
+    } else {// Maybe throw error
       System.out.print("User not logged in");
     }
   }
