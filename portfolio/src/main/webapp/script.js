@@ -14,11 +14,31 @@
 
 //Runs two functions on load
 function executeFunctions() {
-    moveText();
-    getMessages();
-    collapsible();
+  moveText();
+  getMessages();
+  signIn();
+  collapsible();
 }
 
+// Run serverlet to get url for log in
+function signIn() {
+  fetch('/log-in', {method: 'POST'}).then(loginContainer => loginContainer.json()).then(loginContainer => {
+    // Get [p, a] elements from log in div
+    logInElements = document.getElementById("log-in").children;
+
+    // Set inner text for paragraph
+    logInElements[0].innerText = loginContainer.greetingForVisitorOrUser;
+
+    // Set link and text for anchor
+    logInAnchor = logInElements[1];
+    logInAnchor.href = loginContainer.urlToLogoutOrLogin;
+    logInAnchor.innerText = loginContainer.typeOfMessage;
+
+    if (loginContainer.typeOfMessage == "Login" || loginContainer.typeOfMessage == "Nickname") {
+      document.getElementById("input-container").classList.add("hidden");
+    }
+  });
+}
 
 /**
  * Displays random fact about me
@@ -73,7 +93,8 @@ function collapsible() {
       // When button is clicked, hide or undhide its respective content
       var content = this.nextElementSibling;
       hideUnhide(content);
-    })};
+    })
+  };
 }
 
 /*
@@ -81,8 +102,8 @@ function collapsible() {
  * when button is clicked
  */
 function swapMotorcyclePicture() {
-    hideUnhide(document.getElementById('m1')); 
-    hideUnhide(document.getElementById('m2')); 
+  hideUnhide(document.getElementById('m1')); 
+  hideUnhide(document.getElementById('m2')); 
 }
 
 // Delete Messages
@@ -95,11 +116,9 @@ function deleteMessage(id) {
 // Upload message to website
 function postMessage() {
   const textInput = document.getElementById('text-input');
-  const name = document.getElementById('name-input').value;
   const text = textInput.value;
-  if (text != "" & name != ""){
-    const params = new URLSearchParams();
-    params.append('name-input', name);
+  if (text != ""){
+    const params = new URLSearchParams()
     params.append('text-input', text);
     const request = new Request('/data', {method: 'POST', body: params});
     fetch(request).then(() => getMessages());
@@ -113,30 +132,41 @@ function getMessages() {
     const height = Math.min(messages.length, 5) * 100
     const displayMessages = document.getElementById('messages-container');
     displayMessages.innerHTML = "";
-    messages.forEach(message => displayMessages.appendChild(
-      createMessage(message.userName, message.userMessage, message.messageId)));
+    messages.forEach(message => displayMessages.appendChild(createMessage(message)));
     document.getElementById('messages-container').style.height = height.toString() + "px";
   });
 }
 
-/** Creates element for individual message. */
-function createMessage(name, text, id) {
+// Creates element for individual message.
+function createMessage(message) {
+
   const container = document.createElement('div');
-  const person = document.createElement('p');
-  const message = document.createElement('p');
-  const remove = document.createElement('button');
-  person.classList.add("name");
-  message.classList.add("message");
-  remove.classList.add("remove");
+  /* If current user created this message 
+     add button to delete message */
+  if (message.messageCreatedByUser) {
+    addRemoveButton(container, message.messageId)
+  }
 
-  person.innerText = name;
-  message.innerText = text;
-  remove.innerText = "X";
-  remove.onclick = () => deleteMessage(id);
-
-  container.appendChild(remove);
-  container.appendChild(person);
-  container.appendChild(message);
+  // display message with name
+  addText(container, "name", message.userName)
+  addText(container, "message", message.userText)
 
   return container;
+}
+
+// Helper functions:
+
+function addRemoveButton(container, id) {
+  const remove = document.createElement('button');
+  remove.innerText = "X";
+  remove.onclick = () => deleteMessage(id);
+  remove.classList.add("remove");
+  container.appendChild(remove);
+}
+
+function addText(container, type, text) {
+  const pElement = document.createElement('p');
+  pElement.classList.add(type);
+  pElement.innerText = text;
+  container.appendChild(pElement);
 }
