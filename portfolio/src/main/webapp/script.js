@@ -14,9 +14,9 @@
 
 //Runs two functions on load
 function executeFunctions() {
-  moveText();
-  getMessages();
   signIn();
+  moveText();
+  displayMessages();
   collapsible();
 }
 
@@ -34,9 +34,58 @@ function signIn() {
     logInAnchor.href = loginContainer.urlToLogoutOrLogin;
     logInAnchor.innerText = loginContainer.typeOfMessage;
 
-    if (loginContainer.typeOfMessage == "Login" || loginContainer.typeOfMessage == "Nickname") {
+    // User has to be logged in and with a nickname to post messages
+    if (loginContainer.typeOfMessage != "Logout") {
       document.getElementById("input-container").classList.add("hidden");
+
+      const textIfNotLoggedIn = document.createElement('p');
+
+      if (loginContainer.typeOfMessage == "Login") {
+        textIfNotLoggedIn.innerText = "Login with google account to post messages";
+      }
+
+      if (loginContainer.typeOfMessage == "Nickname") {
+        textIfNotLoggedIn.innerText = "Choose a nickname to post messages";
+      }
+
+      document.getElementById("message-title").after(textIfNotLoggedIn);
     }
+  });
+}
+
+// Load google maps inside map div
+function getGoogleMap(placeToPutMarker, nameOfPlace) {
+  var mapDiv = document.getElementsByClassName("map")[0]
+
+  // This ensures expand is toggled on every time
+  if (!mapDiv.classList.toggle("expand")) {
+    mapDiv.classList.toggle("expand")}
+
+  // Make the map
+  var map = new google.maps.Map(mapDiv, {
+    center: placeToPutMarker,
+    zoom: 16,
+    mapTypeId: 'satellite'
+  });
+
+  // Make the marker
+  var marker = new google.maps.Marker({
+    position: placeToPutMarker,
+    animation: google.maps.Animation.DROP,
+    map: map,
+    title:nameOfPlace
+  });
+  
+  // Note: We can use similar code to plot how "risky" an area is
+  var heatmapData = [];
+  for (var i = 0; i < 10; i++) {
+    var latLng = new google.maps.LatLng(placeToPutMarker.lat + Math.random()/10, placeToPutMarker.lng + Math.random()/10);
+    heatmapData.push(latLng);
+  }
+  var heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatmapData,
+    dissipating: false,
+    map: map
   });
 }
 
@@ -88,7 +137,8 @@ function hideUnhide(content)  {
 function collapsible() {
   // Get list of buttons in personal project
   var collapsibles = document.getElementsByClassName("collapsible");
-  for (const i in collapsibles) {
+  const numberOfElements = collapsibles.length;
+  for (var i = 0; i < numberOfElements; ++i) {
     collapsibles[i].addEventListener("click", function() {
       // When button is clicked, hide or undhide its respective content
       var content = this.nextElementSibling;
@@ -110,7 +160,7 @@ function swapMotorcyclePicture() {
 function deleteMessage(id) {
   const params = new URLSearchParams();
   params.append('id', id);
-  fetch('/delete-data', {method: 'POST', body: params}).then(() => getMessages());
+  fetch('/delete-data', {method: 'POST', body: params}).then(() => displayMessages());
 }
 
 // Upload message to website
@@ -121,13 +171,13 @@ function postMessage() {
     const params = new URLSearchParams()
     params.append('text-input', text);
     const request = new Request('/data', {method: 'POST', body: params});
-    fetch(request).then(() => getMessages());
+    fetch(request).then(() => displayMessages());
   }
   textInput.value = "";
 }
 
 // send GET request to server let
-function getMessages() {
+function displayMessages() {
   fetch('/data').then(response => response.json()).then( messages => {
     const height = Math.min(messages.length, 5) * 100
     const displayMessages = document.getElementById('messages-container');
@@ -154,7 +204,7 @@ function createMessage(message) {
   return container;
 }
 
-// Helper functions:
+// Helper functions for messages  -------
 
 function addRemoveButton(container, id) {
   const remove = document.createElement('button');

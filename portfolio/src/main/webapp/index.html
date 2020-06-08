@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title>Nicolas Perez Vergel</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0tyatgsoMYaOt-NnFdXfqWMWocTz_7pw&libraries=visualization"></script>
     <script src="script.js"></script>
   </head>
-  <body onload="executeFunctions();">
+  <body onload="executeFunctions()">
     <div id="log-in">
       <p></p>
       <a></a>
@@ -23,40 +25,50 @@
         <button onclick="addRandomFact()">Click for random fact</button>
         <div id="fact"></div>
       </div>
-
-      <div id="Background">
-        <h1> Background: </h1>
-        <p> I am a rising junior at Harvey Mudd College.
-            This summer I am interning at Google for the STEP program.
+      
+      <h1> Background: </h1>
+      <div class="section">
+        <p> I am a rising junior at 
+          <button class="location" onclick="getGoogleMap({lat: 34.105438, lng: -117.711540}, 'My college')">
+            Harvey Mudd College
+          </button>.
+            This summer I am interning at 
+          <button class="location" onclick="getGoogleMap({lat: 40.022461, lng: -105.254982}, 'My work?')">
+            Google
+          </button>.
+            for the STEP program.
             I know Python, Java, C++ and Javascript.
         </p>
+
+        <div class="map"></div>
       </div>
 
       <div>
         <h1> Personal Projects: </h1>
         <button class="collapsible">Acceleration Scheme for Semi-Autonomous Vehicles</button>
-        <div class="content hidden">
+        <div class="content hidden section">
           <p> Developed an algorithm to calculate the safest and most efficient acceleration scheme for a platoon. 
             <a href="paper.html">Paper</a> currently under review.
           </p>
         </div>
         <button class="collapsible"> App for buying and selling used textbooks </button>
-        <div class="content hidden">
+        <div class="content hidden section">
           <p> In college I made an <a href="https://github.com/jgrant12345/Social-App-Textbooks">app</a>
               to trade textbooks since new ones are overly priced!
           </p>
         </div>
         <button class="collapsible">House Valuation</button>
-        <div class="content hidden">
+        <div class="content hidden section">
           <p> Using machine learning we can estimate a price for your house (as long as you live in Fort Collins) <br>
             <a href="http://focofoodie.com/"> FOCO House Pricing </a>
           </p>
         </div>
-
-        <p id="more"> Want to see more stuff? Find me at 
-          <a href="https://github.com/jgrant12345/Social-App-Textbooks">Github</a> or 
-          <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193">LinkedIn</a>.
-        </p>
+        <h3 id="more"> Want to see more stuff? Find me at 
+          <a href="https://github.com/jgrant12345/Social-App-Textbooks"><ion-icon name="logo-github"></ion-icon></a>
+          Github or 
+          <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193"><ion-icon name="logo-linkedin"></ion-icon></a>
+          LinkedIn.
+        </h3>
       </div>
 
       <div id="fun-fact">
@@ -75,7 +87,7 @@
         </div>
       </div>
 
-      <h1>Messages:</h1>
+      <h1 id="message-title">Messages:</h1>
       <div id="input-container">
         <textarea name="text-input" id="text-input" placeholder="Something nice?"></textarea>
         <button onclick="postMessage()"> Post message </button>
