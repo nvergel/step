@@ -82,11 +82,11 @@ public class DataServlet extends HttpServlet {
         Message userMessage = new Message(userId, userText.get(), timeCreated);
         ofy().save().entity(userMessage).now();
 
-      } else {// Maybe throw error
-        System.out.print("No message found");
+      } else {
+        throw new IllegalArgumentException("No message found");
       }
-    } else {// Maybe throw error
-      System.out.print("User not logged in");
+    } else {
+      throw new IllegalStateException("User not logged in");
     }
   }
 
