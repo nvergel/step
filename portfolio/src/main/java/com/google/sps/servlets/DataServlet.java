@@ -85,7 +85,7 @@ public class DataServlet extends HttpServlet {
       } else {
         throw new IllegalArgumentException("No message found");
       }
-    } else {// Maybe throw error
+    } else {
       throw new IllegalStateException("User not logged in");
     }
   }
