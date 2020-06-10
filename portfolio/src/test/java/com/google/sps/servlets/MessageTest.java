@@ -35,17 +35,19 @@ public final class MessageTest {
   public void testLessThanAndGreaterThan() {
     Message message1 = new Message("0", "a", 1);
     Message message2 = new Message("1", "b", 2);
+    Message message3 = new Message("2", "c", 1);
 
     Assert.assertTrue(message1.compareTo(message2) > 0);
     Assert.assertTrue(message2.compareTo(message1) < 0);
+    Assert.assertEquals(message1.compareTo(message3), 0);
+    Assert.assertEquals(message3.compareTo(message1), 0);
   }
 
 @Test
   public void testEqual() {
     Message message1 = new Message("0", "a", 1);
-    Message message2 = new Message("1", "b", 1);
+    Message message2 = new Message("0", "a", 1);
 
-    Assert.assertEquals(message1.compareTo(message2), 0);
-    Assert.assertEquals(message2.compareTo(message1), 0);
+    Assert.assertEquals(message1, message2);
   }
 }

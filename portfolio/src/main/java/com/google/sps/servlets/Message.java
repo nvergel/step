@@ -28,4 +28,10 @@ public class Message implements Comparable< Message >{
       return -1;
     }
   }
+
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof Message && messageId == other.messageId;
+  }
+
 }
