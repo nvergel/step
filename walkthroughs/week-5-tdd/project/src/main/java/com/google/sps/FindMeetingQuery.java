@@ -27,16 +27,54 @@ public final class FindMeetingQuery {
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
       return timesForMeeting;
     }
+ 
+    // Assume optional attendees can't be included until
+    // slot is found
+    boolean optionalsIncluded = false;
 
     // Begin search at start of day
     int beginSlot = TimeRange.START_OF_DAY;
-    for (Event event : events) {
-      // No conflict move on
-      if (checkForConflict(event, request.getAttendees())) {
-        break;
-      }
 
-      beginSlot = addSlotIfItFits(event, request, beginSlot, timesForMeeting);
+    // Keep track of time slots for optional attendees
+    int beginSlotOptional = beginSlot;
+
+    for (Event event : events) {
+      // Check for conflicts
+      boolean noConflict = checkForConflict(event, request.getAttendees());
+      boolean noOptionalConflict = checkForConflict(event, request.getOptionalAttendees());
+
+      // If optionals can be included do original search method
+      if (optionalsIncluded) {
+        // No conflicts, move on
+        if ( noConflict && noOptionalConflict) {
+          continue;
+        }
+
+        beginSlot = addSlotIfItFits(event, request, beginSlot, timesForMeeting);
+
+      } else {
+        // Check to see if optional attendees can be included
+        if (noOptionalConflict) {
+          if (slotFits(event, request, beginSlotOptional)) {
+            optionalsIncluded = true;
+          }
+        } else {
+          if (slotFits(event, request, beginSlotOptional)) {
+            optionalsIncluded = true;
+            beginSlot = addSlotIfItFits(event, request, beginSlotOptional, timesForMeeting);
+            continue;
+          } else {
+            beginSlotOptional = event.getWhen().end();
+          }
+        }
+
+        // No conflict move on
+        if (noConflict) {
+          continue;
+        }
+
+        beginSlot = addSlotIfItFits(event, request, beginSlot, timesForMeeting);
+      }
     }
     
     // Check for open slot at end of day
