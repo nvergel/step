@@ -15,9 +15,65 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    ArrayList<TimeRange> timesForMeeting = new ArrayList<TimeRange>();
+
+    // Meeting is too long  
+    if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
+      return timesForMeeting;
+    }
+
+    // Begin search at start of day
+    int beginSlot = TimeRange.START_OF_DAY;
+    for (Event event : events) {
+      // No conflict move on
+      if (checkForConflict(event, request.getAttendees())) {
+        break;
+      }
+
+      beginSlot = addSlotIfItFits(event, request, beginSlot, timesForMeeting);
+    }
+    
+    // Check for open slot at end of day
+    if (beginSlot < TimeRange.END_OF_DAY) {
+      timesForMeeting.add(TimeRange.fromStartEnd(beginSlot, TimeRange.END_OF_DAY, true));
+    }
+    return timesForMeeting;
+  }
+
+  /* Checks if the set of an event's attendees does not intersect the
+   * set of the request's attendees
+   */
+  public boolean checkForConflict(Event event, Collection<String> attendees) {
+    return Collections.disjoint(event.getAttendees(), attendees);
+  }
+
+  public int addSlotIfItFits(Event event, MeetingRequest request, 
+                             int beginSlot, ArrayList<TimeRange> timesForMeeting) {
+    // On conflict end time slot before event
+    int endSlot = event.getWhen().start();
+
+    // Check that request fits in time slot and add time slot
+    if ( slotFits(event, request, beginSlot) ) {
+      timesForMeeting.add(TimeRange.fromStartEnd(beginSlot, endSlot, false));
+    }
+
+    // Start new slot after event ends
+    if (beginSlot < event.getWhen().end()) {
+      beginSlot = event.getWhen().end();
+    }
+
+    return beginSlot;
+  }
+
+  // Returns false if the current slot is too short for the request
+  public boolean slotFits(Event event, MeetingRequest request, int beginSlot) {
+    int endSlot = event.getWhen().start();
+    return (endSlot - beginSlot) >= request.getDuration();
   }
 }
