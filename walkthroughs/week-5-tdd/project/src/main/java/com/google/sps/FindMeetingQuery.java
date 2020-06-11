@@ -43,6 +43,12 @@ public final class FindMeetingQuery {
       boolean noConflict = checkForConflict(event, request.getAttendees());
       boolean noOptionalConflict = checkForConflict(event, request.getOptionalAttendees());
 
+      if (slotFits(event, request, beginSlotOptional)) {
+        optionalsIncluded = true;
+      } else if (!noOptionalConflict) {
+        beginSlotOptional = event.getWhen().end();
+      }
+
       // If optionals can be included do original search method
       if (optionalsIncluded) {
         // No conflicts, move on
@@ -53,21 +59,6 @@ public final class FindMeetingQuery {
         beginSlot = addSlotIfItFits(event, request, beginSlot, timesForMeeting);
 
       } else {
-        // Check to see if optional attendees can be included
-        if (noOptionalConflict) {
-          if (slotFits(event, request, beginSlotOptional)) {
-            optionalsIncluded = true;
-          }
-        } else {
-          if (slotFits(event, request, beginSlotOptional)) {
-            optionalsIncluded = true;
-            beginSlot = addSlotIfItFits(event, request, beginSlotOptional, timesForMeeting);
-            continue;
-          } else {
-            beginSlotOptional = event.getWhen().end();
-          }
-        }
-
         // No conflict move on
         if (noConflict) {
           continue;
@@ -83,15 +74,15 @@ public final class FindMeetingQuery {
     }
     return timesForMeeting;
   }
-
+  
   /* Checks if the set of an event's attendees does not intersect the
    * set of the request's attendees
    */
-  public boolean checkForConflict(Event event, Collection<String> attendees) {
+  private boolean checkForConflict(Event event, Collection<String> attendees) {
     return Collections.disjoint(event.getAttendees(), attendees);
   }
 
-  public int addSlotIfItFits(Event event, MeetingRequest request, 
+  private int addSlotIfItFits(Event event, MeetingRequest request, 
                              int beginSlot, ArrayList<TimeRange> timesForMeeting) {
     // On conflict end time slot before event
     int endSlot = event.getWhen().start();
@@ -110,7 +101,7 @@ public final class FindMeetingQuery {
   }
 
   // Returns false if the current slot is too short for the request
-  public boolean slotFits(Event event, MeetingRequest request, int beginSlot) {
+  private boolean slotFits(Event event, MeetingRequest request, int beginSlot) {
     int endSlot = event.getWhen().start();
     return (endSlot - beginSlot) >= request.getDuration();
   }
