@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 public final class FindMeetingQuery {
+  private int beginSlot;
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> timesForMeeting = new ArrayList<TimeRange>();
 
@@ -27,17 +29,24 @@ public final class FindMeetingQuery {
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
       return timesForMeeting;
     }
- 
-    // Assume optional attendees can't be included until
-    // slot is found
+    
+    getTimeSlots(events, request, timesForMeeting);
+
+    // Check for open slot at end of day
+    if ( beginSlot < TimeRange.END_OF_DAY) {
+      timesForMeeting.add(TimeRange.fromStartEnd(beginSlot, TimeRange.END_OF_DAY, true));
+    }
+    return timesForMeeting;
+  }
+  
+  // Loop through list of events to find time slots that fit request requirenment
+  private void getTimeSlots(Collection<Event> events, MeetingRequest request, ArrayList<TimeRange> timesForMeeting) {
+    // Assume optional attendees can't be included until slot is found
     boolean optionalsIncluded = false;
 
     // Begin search at start of day
-    int beginSlot = TimeRange.START_OF_DAY;
-
-    // Keep track of time slots for optional attendees
+    beginSlot = TimeRange.START_OF_DAY;
     int beginSlotOptional = beginSlot;
-
     for (Event event : events) {
       // Check for conflicts
       boolean noConflict = checkForConflict(event, request.getAttendees());
@@ -48,31 +57,13 @@ public final class FindMeetingQuery {
       } else if (!noOptionalConflict) {
         beginSlotOptional = event.getWhen().end();
       }
-
-      // If optionals can be included do original search method
-      if (optionalsIncluded) {
-        // No conflicts, move on
-        if ( noConflict && noOptionalConflict) {
-          continue;
-        }
-
-        beginSlot = addSlotIfItFits(event, request, beginSlot, timesForMeeting);
-
-      } else {
-        // No conflict move on
-        if (noConflict) {
-          continue;
-        }
-
-        beginSlot = addSlotIfItFits(event, request, beginSlot, timesForMeeting);
+     
+      noConflict = optionalsIncluded ? noConflict && noOptionalConflict : noConflict;
+      if (noConflict) {
+        continue;
       }
+      addSlotIfItFits(event, request, timesForMeeting);
     }
-    
-    // Check for open slot at end of day
-    if (beginSlot < TimeRange.END_OF_DAY) {
-      timesForMeeting.add(TimeRange.fromStartEnd(beginSlot, TimeRange.END_OF_DAY, true));
-    }
-    return timesForMeeting;
   }
   
   /* Checks if the set of an event's attendees does not intersect the
@@ -82,8 +73,8 @@ public final class FindMeetingQuery {
     return Collections.disjoint(event.getAttendees(), attendees);
   }
 
-  private int addSlotIfItFits(Event event, MeetingRequest request, 
-                             int beginSlot, ArrayList<TimeRange> timesForMeeting) {
+  private void addSlotIfItFits(Event event, MeetingRequest request,
+                              ArrayList<TimeRange> timesForMeeting) {
     // On conflict end time slot before event
     int endSlot = event.getWhen().start();
 
@@ -96,13 +87,11 @@ public final class FindMeetingQuery {
     if (beginSlot < event.getWhen().end()) {
       beginSlot = event.getWhen().end();
     }
-
-    return beginSlot;
   }
 
   // Returns false if the current slot is too short for the request
-  private boolean slotFits(Event event, MeetingRequest request, int beginSlot) {
+  private boolean slotFits(Event event, MeetingRequest request, int beginTimeSlot) {
     int endSlot = event.getWhen().start();
-    return (endSlot - beginSlot) >= request.getDuration();
+    return (endSlot - beginTimeSlot) >= request.getDuration();
   }
 }
