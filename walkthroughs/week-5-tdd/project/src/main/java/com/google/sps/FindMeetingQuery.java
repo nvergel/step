@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ public final class FindMeetingQuery {
 
   // Returns false if the current slot is too short for the request
   private boolean slotFits(Event event, MeetingRequest request, int beginTimeSlot) {
-    int endSlot = event.getWhen().start();
-    return (endSlot - beginTimeSlot) >= request.getDuration();
+    int eventLength = event.getWhen().start() - beginTimeSlot;
+    return eventLength >= request.getDuration();
   }
 }
