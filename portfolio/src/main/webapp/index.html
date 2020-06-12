@@ -4,30 +4,26 @@
     <meta charset="UTF-8">
     <title>Nicolas Perez Vergel</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0tyatgsoMYaOt-NnFdXfqWMWocTz_7pw&libraries=visualization"></script>
     <script src="script.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
   <body onload="executeFunctions()">
-    <div id="log-in">
-      <p></p>
-      <a></a>
+    <div id="contact-info">
+      <a href="https://github.com/jgrant12345/Social-App-Textbooks"><ion-icon name="logo-github"></ion-icon></a>
+      <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193"><ion-icon name="logo-linkedin"></ion-icon></a>
     </div>
-    <div id="wrapper">
-        
+
       <div id="name">
         <img src="images/face.jpg" id="face"/>
         <h1>Nicolas Perez Vergel</h1>
         <p> (call me Nico) </p>
       </div>
 
-      <div id="personal-info">
-        <button onclick="addRandomFact()">Click for random fact</button>
-        <div id="fact"></div>
-      </div>
-      
-      <h1> Background: </h1>
       <div class="section">
+        <h1> Background: </h1>
         <p> I am a rising junior at 
           <button class="location" onclick="getGoogleMap({lat: 34.105438, lng: -117.711540}, 'My college')">
             Harvey Mudd College
@@ -43,7 +39,11 @@
         <div class="map"></div>
       </div>
 
-      <div>
+      <div class="section">
+        <h1> Work History </h1>
+      </div>
+
+      <div class="section">
         <h1> Personal Projects: </h1>
         <button class="collapsible">Acceleration Scheme for Semi-Autonomous Vehicles</button>
         <div class="content hidden section">
@@ -63,36 +63,11 @@
             <a href="http://focofoodie.com/"> FOCO House Pricing </a>
           </p>
         </div>
-        <h3 id="more"> Want to see more stuff? Find me at 
-          <a href="https://github.com/jgrant12345/Social-App-Textbooks"><ion-icon name="logo-github"></ion-icon></a>
-          Github or 
-          <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193"><ion-icon name="logo-linkedin"></ion-icon></a>
-          LinkedIn.
-        </h3>
       </div>
 
-      <div id="fun-fact">
-        <h1> Fun Facts about me! </h1>
-        <p> I like plants (orchids are my favorites)</p>
-        <img src='images/orchid.jpg' width="700"/>
-        <img src='images/bonzai.jpg' width="700"/>
-        <p> I also like motorcycling </p>
-        <div id="m1">
-          <p> Here is a picture of my first motorcycle: <button onclick="swapMotorcyclePicture()" id="btn"> > </button> </p> 
-          <img src='images/m1.jpg' width="700"/>
-        </div>
-        <div class="hidden" id="m2">
-          <p> Now a picture of my current motorcycle: <button onclick="swapMotorcyclePicture()" id="btn"> < </button> </p>
-          <img src='images/m2.jpg' width="700"/>
-        </div>
+      <div class="section">
+	<h1> Interests </h1>
       </div>
 
-      <h1 id="message-title">Messages:</h1>
-      <div id="input-container">
-        <textarea name="text-input" id="text-input" placeholder="Something nice?"></textarea>
-        <button onclick="postMessage()"> Post message </button>
-      </div>
-      <div id="messages-container"></div>
-    </div>
   </body>
 </html>

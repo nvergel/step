@@ -14,43 +14,7 @@
 
 //Runs two functions on load
 function executeFunctions() {
-  signIn();
-  moveText();
-  displayMessages();
   collapsible();
-}
-
-// Run serverlet to get url for log in
-function signIn() {
-  fetch('/log-in', {method: 'POST'}).then(loginContainer => loginContainer.json()).then(loginContainer => {
-    // Get [p, a] elements from log in div
-    logInElements = document.getElementById("log-in").children;
-
-    // Set inner text for paragraph
-    logInElements[0].innerText = loginContainer.greetingForVisitorOrUser;
-
-    // Set link and text for anchor
-    logInAnchor = logInElements[1];
-    logInAnchor.href = loginContainer.urlToLogoutOrLogin;
-    logInAnchor.innerText = loginContainer.typeOfMessage;
-
-    // User has to be logged in and with a nickname to post messages
-    if (loginContainer.typeOfMessage != "Logout") {
-      document.getElementById("input-container").classList.add("hidden");
-
-      const textIfNotLoggedIn = document.createElement('p');
-
-      if (loginContainer.typeOfMessage == "Login") {
-        textIfNotLoggedIn.innerText = "Login with google account to post messages";
-      }
-
-      if (loginContainer.typeOfMessage == "Nickname") {
-        textIfNotLoggedIn.innerText = "Choose a nickname to post messages";
-      }
-
-      document.getElementById("message-title").after(textIfNotLoggedIn);
-    }
-  });
 }
 
 // Load google maps inside map div
@@ -76,17 +40,6 @@ function getGoogleMap(placeToPutMarker, nameOfPlace) {
     title:nameOfPlace
   });
   
-  // Note: We can use similar code to plot how "risky" an area is
-  var heatmapData = [];
-  for (var i = 0; i < 10; i++) {
-    var latLng = new google.maps.LatLng(placeToPutMarker.lat + Math.random()/10, placeToPutMarker.lng + Math.random()/10);
-    heatmapData.push(latLng);
-  }
-  var heatmap = new google.maps.visualization.HeatmapLayer({
-    data: heatmapData,
-    dissipating: false,
-    map: map
-  });
 }
 
 /**
