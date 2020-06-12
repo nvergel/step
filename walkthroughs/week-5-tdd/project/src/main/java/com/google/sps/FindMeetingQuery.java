@@ -42,7 +42,7 @@ public final class FindMeetingQuery {
   // Loop through list of events to find time slots that fit request requirenment
   private void getTimeSlots(Collection<Event> events, MeetingRequest request, ArrayList<TimeRange> timesForMeeting) {
     // Assume optional attendees can't be included until slot is found
-    boolean optionalsIncluded = false;
+    boolean optionalsIncluded = request.getAttendees().isEmpty();
 
     // Begin search at start of day
     beginSlot = TimeRange.START_OF_DAY;

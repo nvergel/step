@@ -375,7 +375,6 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-  /* I think this test violates the assumption of what should be returned
   @Test
   public void notEnoughRoomForOptionals() {
     // Have one person, but make it so that there is just enough room at one point in the day to
@@ -396,5 +395,5 @@ public final class FindMeetingQueryTest {
         Arrays.asList();
 
     Assert.assertEquals(expected, actual);
-  }  */
+  }
 }
