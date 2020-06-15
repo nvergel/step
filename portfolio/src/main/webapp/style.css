@@ -3,6 +3,7 @@
 
 body {
   margin: 0;
+  background-color: #f8f8ff;
 }
 
 h1 {
@@ -16,13 +17,6 @@ p {
 
 button {
   border-radius: 4px;
-  background-image: -webkit-gradient(
-    linear,
-    right bottom,
-    left top,
-    color-stop(0, #c1d5f7),
-    color-stop(1, #d2e0f9)
-  );
   outline: none;
   cursor: pointer;
   border: none;
@@ -31,18 +25,6 @@ button {
   padding-right: 5px;
 }
 
-button:hover {
-  background-image: -webkit-gradient(
-    linear,
-    right bottom,
-    left top,
-    color-stop(0, #d2e0f9),
-    color-stop(1, #d2e0f9)
-  );
-}
-
-
-
 /* Use to hide and unhide elements */
 .hidden {
   display: none;
@@ -50,10 +32,16 @@ button:hover {
 
 /* ---------- Format section ---------- */
 
-.section {
-  width: 50%;
-  margin: auto;
-  height: 20rem;
+.pre-load #first,
+.pre-load #second,
+.pre-load #third,
+.pre-load #fourth,
+.pre-load #fith {
+  height: 0;
+}
+
+.block {
+  overflow: auto;
 }
 
 .title {
@@ -70,32 +58,85 @@ button:hover {
 
 .line {
   width: 40%;
-  height: .5rem;
-  background-color: black;
-  display:inline-block
+  height: .2rem;
+  display: inline-block;
+  bottom: .5rem;
+  position: relative;
 }
 
-.background1 {
-
+.section {
+  width: 50%;
+  margin: auto;
 }
 
-.background2 {
-  background-color: lightgray;
+.mini-section {
+  clear: left;
+  width: 60rem;
 }
 
-.background3 {
+.mini-section img {
+  float: left;
+  margin-bottom: 2rem;
+  left: 5rem;
+  position: relative;
+}
+
+.mini-section p {
+  top: 1rem;
+  left: 9rem;
+  position: relative;
+}
+
+.color1 {
+  background-color: #f8f8ff;
+}
+
+.color2 {
+  background-color: #8ea2c4;
+}
+
+.color3 {
   background-color: #213352;
-  color: #ddd;
+  color: #f8f8ff;
 }
 
-.background4 {
-    
+/* Background */
+#first {
+  height: 20rem;
+  transition: height .5s linear;
+}
+
+/* Work History */
+#second {
+  height: 35rem;
+  transition: height .5s linear .5s;
+  box-shadow: 0 0 .8rem #8ea2c4;
+}
+
+/* Background */
+#third {
+  height: 20rem;
+  transition: height .5s linear 1s;
+  box-shadow: 0 0 .8rem #213352;
+}
+
+/* Background */
+#fourth {
+  height: 20rem;
+  transition: height .5s linear 1.5s;
+  box-shadow: 0 0 .8rem #8ea2c4;
+}
+
+/* Background */
+#fith {
+  height: 20rem;
+  transition: height .5s linear 2s;
 }
 
 /* ---------- Contact Info ---------- */
 
 #contact-info {
-  position:absolute;
+  position: absolute;
   right: 1rem;
   position: fixed;
   padding-top: 1rem;
@@ -112,8 +153,9 @@ button:hover {
 /* Make selfie name and comment
    appear in same line */
 #name-wrapper {
-  color: white;
-  height: 13rem
+  color: #f8f8ff;
+  height: 13rem;
+  background-color: #f8f8ff;
 }
 
 #name {
@@ -128,7 +170,7 @@ button:hover {
   padding-top: 1rem;
 }
 
-#name-wrapper img {
+#face {
   border-radius: 50%;
   position: absolute;
   margin-left: calc(50% - 13rem);
@@ -163,6 +205,11 @@ button:hover {
     );
 }
 
+.collapsible:hover {
+  background-image: none;
+  background-color: #d2e0f9;
+}
+
 .content {
   border-bottom: 5px solid lightblue;
   margin-bottom: 10px;
@@ -183,21 +230,6 @@ button:hover {
   text-decoration: underline;
   text-decoration: underline;
   color: brown;
-}
-
-/* ---------- Map section ---------- */
-
-.map {
-  overflow: hidden;
-  height: 0;
-  width: 0;
-  transition: all .3s ease;
-}
-
-.map.expand {
-  border: thin solid black;
-  height: 40rem;
-  width: 40rem;
 }
 
 

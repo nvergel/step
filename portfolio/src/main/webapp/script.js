@@ -15,6 +15,7 @@
 //Runs two functions on load
 function executeFunctions() {
   collapsible();
+  document.getElementsByClassName("wrapper")[0].classList.remove("pre-load");
 }
 
 // Load google maps inside map div
