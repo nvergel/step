@@ -10,9 +10,13 @@ h1 {
   margin-top: 30px;
 }
 
-p {
+p, ul {
   font-size: 1.4rem;
   margin: 0;
+}
+
+li {
+  margin-bottom: 1rem;
 }
 
 button {
@@ -23,6 +27,7 @@ button {
   padding: 2px;
   padding-left: 5px;
   padding-right: 5px;
+  border: none;
 }
 
 /* Use to hide and unhide elements */
@@ -36,7 +41,7 @@ button {
 .pre-load #second,
 .pre-load #third,
 .pre-load #fourth,
-.pre-load #fith {
+.pre-load #fifth {
   height: 0;
 }
 
@@ -52,7 +57,7 @@ button {
 
 .title h1 {
   text-align: center;
-  width: 19%;
+  width: 18%;
   display:inline-block
 }
 
@@ -71,82 +76,147 @@ button {
 
 .mini-section {
   clear: left;
-  width: 60rem;
+  width: 80%;
 }
 
 .mini-section img {
   float: left;
-  margin-bottom: 2rem;
-  left: 5rem;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+  left: 10%;
   position: relative;
 }
 
-.mini-section p {
-  top: 1rem;
+.mini-section ul {
+  font-size: 1.3rem;
+  top: 2rem;
   left: 9rem;
   position: relative;
 }
 
-.color1 {
+@media only screen and (max-width: 1200px) {
+  .line {
+     width: 30%;
+   }
+
+  .title h1 {
+    width: 29%;
+  }
+
+  .section {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .line {
+     width: 20%;
+   }
+
+  .title h1 {
+    width: 50%;
+  }
+}
+
+.color1, .color3 .line {
   background-color: #f8f8ff;
 }
 
-.color2 {
+.color2, .color1 .line {
   background-color: #8ea2c4;
 }
 
-.color3 {
+.color3, .color2 .line {
   background-color: #213352;
   color: #f8f8ff;
 }
 
+.color4 {
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0, #385381 ),
+    color-stop(1, #8ea2c4)
+  );
+}
+
 /* Background */
 #first {
-  height: 20rem;
+  height: 22rem;
   transition: height .5s linear;
 }
 
 /* Work History */
 #second {
-  height: 35rem;
+  height: 39rem;
   transition: height .5s linear .5s;
   box-shadow: 0 0 .8rem #8ea2c4;
 }
 
-/* Background */
+/* Projects */
 #third {
-  height: 20rem;
-  transition: height .5s linear 1s;
   box-shadow: 0 0 .8rem #213352;
 }
 
-/* Background */
-#fourth {
-  height: 20rem;
-  transition: height .5s linear 1.5s;
-  box-shadow: 0 0 .8rem #8ea2c4;
+#third.transition1 {
+  transition: height .5s linear 1s;
 }
 
-/* Background */
-#fith {
-  height: 20rem;
-  transition: height .5s linear 2s;
+#third.transition2 {
+  transition: height .1s ease-in 0s;
+}
+
+#third.one {
+  height: 18rem;
+}
+
+#third.two {
+  height: 23rem;
+}
+
+#third.three {
+  height: 27rem;
+}
+
+#third.four {
+  height: 31rem;
+}
+
+/* Interests */
+#fourth {
+  height: 16rem;
+  transition: height .5s linear 1.5s;
 }
 
 /* ---------- Contact Info ---------- */
 
-#contact-info {
-  position: absolute;
-  right: 1rem;
-  position: fixed;
-  padding-top: 1rem;
+/* Bottom */
+#fifth {
+  text-align: center;
+  height: 15rem;
+  transition: height .5s linear 2s;
+  box-shadow: 0 0 .8rem #8ea2c4;
 }
 
+#fifth p {
+  margin-bottom: 1rem;
+}
 
-#contact-info a {
+/*  Top  */
+#contact-info-top {
+  position: fixed;
+  right: 1rem;
+  padding-top: 1rem;
+  height: 10rem;
   font-size: 3rem;
+}
+
+.contact-info a {
+  font-size: 5rem;
   color: lightblue;
 }
+
 
 /* ---------- Header with name and selfie ---------- */
 
@@ -168,6 +238,7 @@ button {
   );
   height: 10rem;
   padding-top: 1rem;
+  box-shadow: 0 0 .8rem #334f80aa;
 }
 
 #face {
@@ -189,18 +260,25 @@ button {
 }
 
 
+/* ---------- Work History ---------- */
+
+#id {
+  border-radius: 50%;
+}
+
+
 /* ---------- Personal Project section ---------- */
 
 .collapsible {
   margin-top: 5px;
   padding: 13px;
   width: 100%;
-  font-size: 15px;
+  font-size: 1.2rem;
   background-image: -webkit-gradient(
       linear,
       left bottom,
       left top,
-      color-stop(0, #c1d5f7),
+      color-stop(0, #9bb9ec),
       color-stop(1, #d2e0f9)
     );
 }
@@ -211,74 +289,12 @@ button {
 }
 
 .content {
-  border-bottom: 5px solid lightblue;
-  margin-bottom: 10px;
-  margin-right: 30px;
+  border-left: .3rem solid lightblue;
+  padding-left: 1rem;
+  margin: 1rem 3rem;
+  transition: height .2s ease-in 0s;
 }
 
-.content p {
-  margin-bottom: 5px;
-}
-
-#more {
-  margin-top: 30px;
-}
-
-.location {
-  background-color: aliceblue;
-  background-image: none;
-  text-decoration: underline;
-  text-decoration: underline;
-  color: brown;
-}
-
-
-/* ---------- Fun fact section ---------- */
-
-#btn {
-  position: relative;
-  left: 410px;
-}
-
-
-/* ---------- Messages section ---------- */
-
-.message {
-  background-color: #f5f5f5;
-  display:inline-block;
-  border-style: groove;
-  padding: 3px 7px 3px 3px;
-  margin-top: 0;
-  margin-right: 10px;
-}
-
-.name{
-  margin-bottom: 0;
-}
-
-.remove {
-  float:left;
-  margin-top: 25px;
-  margin-right: 7px;
-}
-
-#messages-container {
-  background-color: #fafafa;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 1px;
-  margin-top: 10px;
-  overflow: scroll;
-}
-
-#name-input {
-  height: 15px;
-  width: 250px;
-  position: relative;
-  top: 6px;
-}
-
-#text-input {
-  width: 700px;
-  height: 50px;
+.content a {
+  color: #d2e0f9;
 }

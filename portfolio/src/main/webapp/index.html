@@ -11,79 +11,91 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
   <body onload="executeFunctions()">
-    <div id="contact-info">
-      <a href="https://github.com/jgrant12345/Social-App-Textbooks"><ion-icon name="logo-github"></ion-icon></a>
+    <div class="contact-info" id="contact-info-top">
+      <a href="https://github.com/nvergel"><ion-icon name="logo-github"></ion-icon></a>
       <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193"><ion-icon name="logo-linkedin"></ion-icon></a>
     </div>
 
-      <div id="name-wrapper">
-        <img src="images/face.jpg" id="face"/>
-        <div id="name">
-          <h1>Nicolas Perez Vergel</h1>
-          <p> (call me Nico) </p>
-        </div>
+    <div id="name-wrapper">
+      <img src="images/face.jpg" id="face"/>
+      <div id="name">
+        <h1>Nicolas Perez Vergel</h1>
+        <p> (call me Nico) </p>
       </div>
+    </div>
 
     <div class="wrapper pre-load">
       <div class="color1 block" id="first">
         <div class="title">
-          <div class="line color2"></div>
+          <div class="line"></div>
             <h1> Background </h1>
-          <div class="line color2"></div>
+          <div class="line"></div>
         </div>
 
         <div class="section">
           <div class="mini-section">
             <img src="images/hmc.png" width="200rem"/>
-            <p> I am a junior at Harvey Mudd College. Currently puruing a bachelors in CS.
-                I know Python, Java, C++ and Javascript.
-            </p>
+            <ul>
+              <li> I am a junior at Harvey Mudd College pursuing a bachelors in CS. </li>
+              <li> Relevant classes I completed are Data Structures and Software Development.
+                   This semester I am taking Algorithms and A.I.
+              </li>
+              <li> Additionally, I have learned Python, Java, C++ and Javascript. </li>
+            </ul>
           </div>
         </div>
       </div>
 
       <div class="color2 block" id="second">
         <div class="title">
-          <div class="line color3"></div>
+          <div class="line"></div>
             <h1> Work History </h1>
-          <div class="line color3"></div>
+          <div class="line"></div>
         </div>
         <div class="section">
           <div class="mini-section">
             <img src="images/google.png" width="200rem"/>
-            <p> STEP
-            </p>
+            <ul>
+              <li> STEP Intern of summer 2020. </li>
+              <li> I learned about server and client models to build 
+                   websites that handle user's inputs by converting them to data sets.
+              </li>
+              <li> Additionally I helped create a website for contact tracing. </li>
+            </ul>
           </div>
 
           <div class="mini-section">
-            <img src="images/id.jpeg" width="200rem"/>
-            <p> Instructor at ID tech, Teaching is my passion
-            </p>
+            <img id="id" src="images/id.jpeg" width="200rem"/>
+            <ul>
+              <li> Instructor at ID tech during summer 2019. </li>
+              <li> I had the previlage of teaching kids how to program in python and java.</li>
+              <li> This experience taught me that one of my passions is teaching. </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <div class="color3 block" id="third">
+      <div class="color3 block transition1" id="third">
         <div class="title">
-          <div class="line color1"></div>
+          <div class="line"></div>
         <h1> Projects </h1>   
-          <div class="line color1"></div>
+          <div class="line"></div>
         </div>
         <div class="section">
           <button class="collapsible">Acceleration Scheme for Semi-Autonomous Vehicles</button>
-            <div class="content hidden section">
+            <div class="content hidden">
             <p> Developed an algorithm to calculate the safest and most efficient acceleration scheme for a platoon. 
-                <a href="paper.html">Paper</a> currently under review.
+                <a href="paper.html">Paper</a> is currently under review.
             </p>
           </div>
           <button class="collapsible"> App for buying and selling used textbooks </button>
-          <div class="content hidden section">
+          <div class="content hidden">
             <p> In college I made an <a href="https://github.com/jgrant12345/Social-App-Textbooks">app</a>
-                to trade textbooks since new ones are overly priced!
+                to trade textbooks since new ones are overly priced! The project uses React and Firebase.
             </p>
           </div>
           <button class="collapsible">House Valuation</button>
-          <div class="content hidden section">
+          <div class="content hidden">
             <p> Using machine learning we can estimate a price for your house (as long as you live in Fort Collins) <br>
                 <a href="http://focofoodie.com/"> FOCO House Pricing </a>
             </p>
@@ -91,30 +103,32 @@
         </div>
       </div>
 
-      <div class="color2 block" id="fourth">
+      <div class="color1 block" id="fourth">
         <div class="title">
-          <div class="line color3"></div>
+          <div class="line"></div>
             <h1> Interests </h1>
-          <div class="line color3"></div>
+          <div class="line"></div>
         </div>
         <div class="section">
-          <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-              Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-              when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-              It has survived not only five centuries, but also the leap into electronic typesetting, 
-              remaining essentially unchanged. It was popularised in the 1960s with the release of 
-              Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing 
-              software like Aldus PageMaker including versions of Lorem Ipsum.
-          </p>
+          <ul>
+            <li> AI and ML: I am considering pursuing a career in AI.</li>
+            <li> Stock Trading: In my free time I like to trade stocks. I am also interested
+                 in algo trading.
+            </li>
+            <li>Operating Systems: I love using Unix when I can, writing bash scripts is a real banger ;).</li>
+          </ul>
         </div>
       </div>
 
-      <div class="color4 block" id="fith">
-        <div class="section">
-          <p> contact info
-          </p>
+      <div class="color4 block" id="fifth">
+        <h1> Contact Me </h1>
+        <p> nperezvergel@gmail.com </p>
+        <div class="contact-info">
+          <a href="https://github.com/nvergel"><ion-icon name="logo-github"></ion-icon></a>
+          <a href="https://www.linkedin.com/in/nicolas-perez-vergel-41a595193"><ion-icon name="logo-linkedin"></ion-icon></a>
         </div>
       </div>
+
     </div>
   </body>
 </html>

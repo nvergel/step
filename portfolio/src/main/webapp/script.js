@@ -15,80 +15,56 @@
 //Runs two functions on load
 function executeFunctions() {
   collapsible();
+  expandSections();
+  window.addEventListener('scroll', function(e) {
+      if (window.scrollY < 184) {
+          document.getElementById("contact-info-top").classList.remove("hidden");
+      } else {
+          document.getElementById("contact-info-top").classList.add("hidden");
+      }
+  });
+}
+
+function expandSections() {
+  const blocks = document.getElementsByClassName("block");
+  const numberOfElements = blocks.length;
+  for (var i = 0; i < numberOfElements; ++i) {
+    block = blocks[i];
+    block.scrollTop = block.scrollHeight; 
+  }
   document.getElementsByClassName("wrapper")[0].classList.remove("pre-load");
 }
 
-// Load google maps inside map div
-function getGoogleMap(placeToPutMarker, nameOfPlace) {
-  var mapDiv = document.getElementsByClassName("map")[0]
-
-  // This ensures expand is toggled on every time
-  if (!mapDiv.classList.toggle("expand")) {
-    mapDiv.classList.toggle("expand")}
-
-  // Make the map
-  var map = new google.maps.Map(mapDiv, {
-    center: placeToPutMarker,
-    zoom: 16,
-    mapTypeId: 'satellite'
-  });
-
-  // Make the marker
-  var marker = new google.maps.Marker({
-    position: placeToPutMarker,
-    animation: google.maps.Animation.DROP,
-    map: map,
-    title:nameOfPlace
-  });
-  
-}
-
-/**
- * Displays random fact about me
- */
-function addRandomFact() {
-  const facts =
-    ['I am 20 years old', 'I live in Colorado', 'I am a human', 'I am not a robot'];
-
-  // Pick a random fact.
-  const fact = facts[Math.floor(Math.random() * facts.length)];
-
-  // Add it to the page.
-  const factsContainer = document.getElementById('fact');
-  factsContainer.innerText = fact;
-}
-
-/* Move text back and forth:
-* Add function that simulates f(x) = |x| on the interval -range < x < range
-* We use position to denote f(x) which also determines the width of the left margin.
-* The width of the left margin oscillates between 0 and range.
-*/
-function moveText() {
-  var x = 0;
-  const range = 100;
-  const factsContainer = document.getElementById('fact');
-  setInterval( function() {
-    const position = Math.abs(x);
-    factsContainer.style.marginLeft = position.toString() + "px";
-    x = (x == range) ? -range : x + 1;
-  }, 20);
-}
-
+var numberOfCollapsibles = 0;
+const sizes = ["one", "two", "three", "four"];
 /*
  * Add or remove .hidden to element
  */
-function hideUnhide(content)  {
+function hideUnhide(content) {
+  var section = document.getElementById("third");
+  if (section.classList.contains("transition1")) {
+    section.classList.remove("transition1");
+    section.classList.add("transition2");
+  }
+  section.classList.remove(sizes[numberOfCollapsibles]);
+
   if (content.classList.contains("hidden")) {
     content.classList.remove("hidden");
+    numberOfCollapsibles++;
   } else {
     content.classList.add("hidden");
+    numberOfCollapsibles--;
   }
+
+  section.classList.add(sizes[numberOfCollapsibles]);
 }
 
 /*
  * This funcion adds a listener to .collapsble which hides/unhides .content
  */
 function collapsible() {
+  var section = document.getElementById("third");
+  section.classList.add(sizes[numberOfCollapsibles]);
   // Get list of buttons in personal project
   var collapsibles = document.getElementsByClassName("collapsible");
   const numberOfElements = collapsibles.length;
